@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Workflow Automation Platform - n8n</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{dn:'#0e0918',dn2:'#1b1728',dn3:'#272333',ac:'#ff3b21',aco:'#ff8e5d'}}}}</script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#0e0918;color:#fff;overflow-x:hidden}
+    .gb{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00)}
+    .gb:hover{filter:brightness(1.1)}
+    .cd{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
+    .cd:hover{border-color:rgba(255,255,255,.12);background:#272333}
+    .gl{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
+    .fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+    .fu.v{opacity:1;transform:translateY(0)}
+    .tg{background:linear-gradient(135deg,#ff8e5d,#ff3b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .nb{backdrop-filter:blur(20px);background:rgba(14,9,24,.85)}
+    .sr{display:flex;gap:3rem;animation:sc 40s linear infinite}
+    @keyframes sc{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .fb{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px}
+    .fb:hover{background:rgba(255,255,255,.06)}
+    .tc{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0e0918}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+    .mega{display:none;position:absolute;top:100%;left:0;min-width:320px;background:#1b1728;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;z-index:100}
+    .nav-item:hover .mega{display:block}
+  </style>
+</head>
+<body>
+  <!-- TOP BANNER -->
+  <div class="gb text-center py-2.5 px-4">
+    <p class="text-white text-[13px] font-medium">🎉 Join our team and CEO Jan at n8n Fest in Berlin on July 16 <a href="#" class="underline ml-1">Reserve your spot →</a></p>
+  </div>
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 nb border-b border-white/5">
+    <nav class="max-w-[1300px] mx-auto px-6 flex items-center justify-between h-16">
+      <div class="flex items-center gap-10">
+        <a href="#" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg gb flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+          </div>
+          <span class="font-bold text-[16px]">n8n</span>
+        </a>
+        <div class="hidden lg:flex items-center gap-1">
+          <div class="nav-item relative px-3 py-2">
+            <button class="text-[13px] text-white/60 hover:text-white transition flex items-center gap-1">Product <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="mega">
+              <div class="grid grid-cols-2 gap-3">
+                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Product overview</div><div class="text-xs text-white/40">Automate business processes without limits</div></a>
+                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Integrations</div><div class="text-xs text-white/40">Seamlessly move and transform data</div></a>
+                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Templates</div><div class="text-xs text-white/40">Explore +10k workflow templates</div></a>
+                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Enterprise</div><div class="text-xs text-white/40">Security and governance at scale</div></a>
+              </div>
+            </div>
+          </div>
+          <div class="nav-item relative px-3 py-2">
+            <button class="text-[13px] text-white/60 hover:text-white transition flex items-center gap-1">Use cases <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="mega" style="min-width:280px">
+              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Building AI agents</a>
+              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">IT operations</a>
+              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Security operations</a>
+              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Lead automation</a>
+              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Supercharge your CRM</a>
+            </div>
+          </div>
+          <a href="#" class="px-3 py-2 text-[13px] text-white/60 hover:text-white transition">Case studies</a>
+          <a href="#" class="px-3 py-2 text-[13px] text-white/60 hover:text-white transition">Docs</a>
+          <a href="#" class="px-3 py-2 text-[13px] text-white/60 hover:text-white transition">Pricing</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#" class="hidden md:inline text-[13px] text-white/60 hover:text-white transition">Sign in</a>
+        <a href="#" class="gb px-5 py-2.5 rounded-lg text-[13px] font-semibold">Get started free</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="relative pt-24 pb-20 px-6 overflow-hidden">
+    <div class="gl w-[700px] h-[700px] bg-[#ff3b21]/15 top-[-250px] right-[-250px]"></div>
+    <div class="gl w-[500px] h-[500px] bg-[#674545]/20 bottom-[-150px] left-[-150px]"></div>
+    <div class="max-w-[900px] mx-auto text-center relative z-10">
+      <div class="fu">
+        <h1 class="text-4xl md:text-6xl lg:text-[76px] font-black leading-[1.05] tracking-tight mb-6">
+          AI agents and workflows<br>you can <span class="tg">see and control</span>
+        </h1>
+      </div>
+      <div class="fu" style="transition-delay:.1s">
+        <p class="text-white/50 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+          Build visually, go deep with code, connect to anything. Every step of your agents' reasoning, traceable on the canvas.
+        </p>
+      </div>
+      <div class="fu flex flex-col sm:flex-row gap-4 justify-center" style="transition-delay:.2s">
+        <a href="#" class="gb px-8 py-4 rounded-xl text-[15px] font-bold">Get started for free</a>
+        <a href="#" class="px-8 py-4 rounded-xl text-[15px] font-semibold border border-white/15 hover:bg-white/5 transition">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF TEXT -->
+  <section class="py-10 px-6">
+    <div class="max-w-[900px] mx-auto text-center">
+      <p class="text-white/30 text-sm">The world's most popular workflow automation platform for technical teams</p>
+      <div class="flex flex-wrap justify-center gap-3 mt-6">
+        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">On-board new employees</span>
+        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">Enrich security incident tickets</span>
+        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">Convert natural language into API calls</span>
+        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">Generate customer insights from reviews</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO SECTION -->
+  <section class="py-16 px-6">
+    <div class="max-w-[1000px] mx-auto">
+      <div class="fu cd rounded-2xl overflow-hidden relative" style="aspect-ratio:16/9">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1b1728] to-[#0e0918] flex items-center justify-center">
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-full gb flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-110 transition">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <p class="text-white/40 text-sm">Watch this video to hear our pitch</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BADGES -->
+  <section class="py-16 px-6 border-y border-white/5">
+    <div class="max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10 text-center">
+      <div class="fu">
+        <div class="text-3xl font-bold mb-2">Top 50 GitHub.</div>
+        <p class="text-white/40 text-sm">Our 193.7k stars place us among the most popular projects.</p>
+      </div>
+      <div class="fu" style="transition-delay:.1s">
+        <div class="text-3xl font-bold mb-2">4.9/5 stars on G2.</div>
+        <p class="text-white/40 text-sm">"I can move fast and never feel boxed in."</p>
+      </div>
+      <div class="fu" style="transition-delay:.2s">
+        <div class="text-3xl font-bold mb-2">200k+ community members.</div>
+        <p class="text-white/40 text-sm">This wouldn't be possible without you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS -->
+  <section class="py-20 px-6">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="fu text-center mb-12">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">Plug AI into your own data &<br><span class="tg">over 500 integrations</span></h2>
+        <p class="text-white/40 text-base max-w-lg mx-auto">Use pre-built nodes for common apps. Custom API connections for everything else.</p>
+      </div>
+      <div class="fu overflow-hidden mb-8">
+        <div class="sr">
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📊 Google Sheets</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🤖 OpenAI</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💬 Slack</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📧 Gmail</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🗄️ PostgreSQL</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📁 Google Drive</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📱 Telegram</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🎵 Discord</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📝 Notion</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💼 HubSpot</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🐦 Twitter</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📊 MySQL</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📊 Google Sheets</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🤖 OpenAI</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💬 Slack</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📧 Gmail</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🗄️ PostgreSQL</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📁 Google Drive</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📱 Telegram</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🎵 Discord</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📝 Notion</span>
+          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💼 HubSpot</span>
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Browse all integrations →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: Build AI agents -->
+  <section class="py-20 px-6">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+        <div class="gl w-[400px] h-[400px] bg-[#ff3b21]/10 top-[-150px] right-[-150px]"></div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-2xl md:text-4xl font-bold mb-4">Build AI agents<br>you can actually <span class="tg">follow</span></h2>
+            <p class="text-white/40 text-sm leading-relaxed mb-6">Connect any model. Inspect every decision. Keep humans in the loop.</p>
+            <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Learn more →</a>
+          </div>
+          <div class="bg-[#0e0918] rounded-xl p-6 border border-white/5 font-mono text-[12px] space-y-2.5">
+            <div class="flex items-center gap-2"><span class="text-[#ff3b21]">●</span><span class="text-white/50">Trigger: Webhook received</span></div>
+            <div class="flex items-center gap-2 ml-4"><span class="text-white/15">│</span></div>
+            <div class="flex items-center gap-2 ml-4"><span class="text-[#ff8e5d]">●</span><span class="text-white/50">OpenAI: Classify intent</span></div>
+            <div class="flex items-center gap-2 ml-8"><span class="text-white/15">│</span></div>
+            <div class="flex items-center gap-2 ml-8"><span class="text-blue-400">●</span><span class="text-white/50">IF: intent === "support"</span></div>
+            <div class="flex items-center gap-2 ml-12"><span class="text-white/15">│</span></div>
+            <div class="flex items-center gap-2 ml-12"><span class="text-green-400">●</span><span class="text-white/50">Slack: Send to #support</span></div>
+            <div class="flex items-center gap-2 ml-12"><span class="text-white/15">│</span></div>
+            <div class="flex items-center gap-2 ml-12"><span class="text-purple-400">●</span><span class="text-white/50">Gmail: Reply to customer</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: Complex AI -->
+  <section class="py-20 px-6">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+        <div class="gl w-[400px] h-[400px] bg-[#674545]/20 bottom-[-150px] left-[-150px]"></div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div class="order-2 md:order-1">
+            <div class="bg-[#0e0918] rounded-xl p-6 border border-white/5 space-y-4">
+              <div class="flex items-center gap-3">
+                <span class="text-lg">🤖</span>
+                <span class="text-sm text-white/60 flex-1">Update Detected</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Running</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-lg">🧪</span>
+                <span class="text-sm text-white/60 flex-1">Running Custom Unit Testing</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">Active</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-lg">🔄</span>
+                <span class="text-sm text-white/60 flex-1">Update Rolled Back Automatically</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Done</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-lg">🔔</span>
+                <span class="text-sm text-white/60 flex-1">IT Team Notified of New Ticket</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Sent</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-1 md:order-2">
+            <h2 class="text-2xl md:text-4xl font-bold mb-4">Build complex AI<br>without getting <span class="tg">boxed in</span></h2>
+            <p class="text-white/40 text-sm leading-relaxed mb-6">Handle multi-agent setups and RAG systems. Use multiple cloud or offline AI models. Integrate with legacy systems while staying set up for the future.</p>
+            <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Explore AI →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: Runs where you decide -->
+  <section class="py-20 px-6">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+        <div class="gl w-[400px] h-[400px] bg-[#a85c5c]/15 top-[-150px] left-[-150px]"></div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-2xl md:text-4xl font-bold mb-4">Runs where <span class="tg">you decide</span></h2>
+            <p class="text-white/40 text-sm leading-relaxed mb-6">Protect your data by deploying on-prem. Access the entire source code on GitHub. Hosted version also available.</p>
+            <div class="flex flex-wrap gap-3">
+              <a href="#" class="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white/70 hover:text-white transition">Deploy with Docker</a>
+              <a href="#" class="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white/70 hover:text-white transition">Source code on GitHub</a>
+            </div>
+          </div>
+          <div class="bg-[#0e0918] rounded-xl p-6 border border-white/5">
+            <div class="grid grid-cols-3 gap-4 text-center">
+              <div class="p-4 rounded-lg bg-white/5"><div class="text-2xl mb-2">🐳</div><div class="text-xs text-white/50">Docker</div></div>
+              <div class="p-4 rounded-lg bg-white/5"><div class="text-2xl mb-2">☁️</div><div class="text-xs text-white/50">Cloud</div></div>
+              <div class="p-4 rounded-lg bg-white/5"><div class="text-2xl mb-2">🖥️</div><div class="text-xs text-white/50">Self-host</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE: Human-in-the-loop -->
+  <section class="py-20 px-6">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+        <div class="gl w-[400px] h-[400px] bg-[#262149]/30 bottom-[-150px] right-[-150px]"></div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div class="order-2 md:order-1">
+            <div class="bg-[#0e0918] rounded-xl p-5 border border-white/5 space-y-3">
+              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-blue-400">
+                <p class="text-xs text-white/50 italic">"Who held meetings with SpaceX last week?"</p>
+              </div>
+              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-green-400">
+                <p class="text-xs text-white/50">On Wednesday, Joe updated the status to "won" in Salesforce after a Zoom call.</p>
+              </div>
+              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-purple-400">
+                <p class="text-xs text-white/50">On Thursday, Sue provided on-site setup and closed the ServiceNow ticket.</p>
+              </div>
+            </div>
+          </div>
+          <div class="order-1 md:order-2">
+            <h2 class="text-2xl md:text-4xl font-bold mb-4">Let people and logic<br>guide <span class="tg">AI decisions</span></h2>
+            <p class="text-white/40 text-sm leading-relaxed mb-6">Enforce structured inputs and outputs to control the data flow to and from AI steps. Combine human-in-the-loop approvals with rule-based automation.</p>
+            <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Learn more →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 px-6">
+    <div class="max-w-[900px] mx-auto text-center fu">
+      <h2 class="text-3xl md:text-5xl font-bold mb-4">Simple enough to see.<br>Powerful enough to <span class="tg">ship</span>.</h2>
+      <p class="text-white/40 text-lg max-w-xl mx-auto mb-8">Join the teams building AI automation they can actually explain.</p>
+      <a href="#" class="inline-flex gb px-8 py-4 rounded-xl text-[15px] font-bold">Start building</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 py-12 px-6">
+    <div class="max-w-[1300px] mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+      <div class="col-span-2 md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-7 h-7 rounded-lg gb flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></div>
+          <span class="font-bold text-sm">n8n</span>
+        </div>
+        <p class="text-white/30 text-xs leading-relaxed">AI workflow automation for technical teams.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-xs text-white mb-4">Product</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Features</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Integrations</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Templates</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Pricing</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Release notes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-xs text-white mb-4">Use cases</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">AI agents</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">IT operations</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security ops</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Lead automation</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">CRM</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-xs text-white mb-4">Resources</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Documentation</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Community</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Blog</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Enterprise</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-xs text-white mb-4">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">About</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Careers</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Contact</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-[1300px] mx-auto border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-white/20 text-xs">© 2026 LM Studio. Inspired by n8n.</p>
+      <div class="flex items-center gap-5">
+        <a href="#" class="text-white/30 hover:text-white text-xs transition">Instagram</a>
+        <a href="#" class="text-white/30 hover:text-white text-xs transition">GitHub</a>
+        <a href="#" class="text-white/30 hover:text-white text-xs transition">Discord</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:.1});
+    document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+  </script>
+</body>
+</html>
