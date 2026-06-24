@@ -6,74 +6,157 @@
   <title>AI Workflow Automation Platform - n8n</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{colors:{dn:'#0e0918',dn2:'#1b1728',dn3:'#272333',ac:'#ff3b21',aco:'#ff8e5d'}}}}</script>
+  <script>tailwind.config={theme:{extend:{colors:{dn:"#0e0918",dn2:"#1b1728",dn3:"#272333",ac:"#ff3b21",aco:"#ff8e5d"}}}}}</script>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',sans-serif;background:#0e0918;color:#fff;overflow-x:hidden;scroll-behavior:smooth}
-    html{scroll-behavior:smooth}
-    .gb{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00)}.gb:hover{filter:brightness(1.1)}
-    .cd{background:#1b1728;border:1px solid rgba(255,255,255,.06)}.cd:hover{border-color:rgba(255,255,255,.12);background:#272333}
-    .gl{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
-    .fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}.fu.v{opacity:1;transform:translateY(0)}
-    .tg{background:linear-gradient(135deg,#ff8e5d,#ff3b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .nb{backdrop-filter:blur(20px);background:rgba(14,9,24,.85)}
-    .sr{display:flex;gap:3rem;animation:sc 40s linear infinite}
-    @keyframes sc{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0e0918}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
-    .mega{display:none;position:absolute;top:100%;left:0;min-width:320px;background:#1b1728;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;z-index:100}
-    .nav-item:hover .mega{display:block}
-    .gradient-mesh{position:absolute;inset:0;overflow:hidden;z-index:0}
-    .mesh-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.35;will-change:transform}
-    .mesh-orb-1{width:600px;height:600px;background:radial-gradient(circle,#ff3b21 0%,transparent 70%);top:-20%;left:-10%;animation:mf1 12s ease-in-out infinite}
-    .mesh-orb-2{width:500px;height:500px;background:radial-gradient(circle,#ff8e5d 0%,transparent 70%);bottom:-30%;right:-10%;animation:mf2 15s ease-in-out infinite}
-    .mesh-orb-3{width:400px;height:400px;background:radial-gradient(circle,#7c3aed 0%,transparent 70%);top:20%;right:20%;animation:mf3 18s ease-in-out infinite}
-    .mesh-orb-4{width:350px;height:350px;background:radial-gradient(circle,#ff3b21 0%,transparent 70%);bottom:10%;left:30%;animation:mf4 14s ease-in-out infinite}
-    @keyframes mf1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(80px,50px) scale(1.1)}66%{transform:translate(-40px,80px) scale(.9)}}
-    @keyframes mf2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-60px,-40px) scale(1.15)}66%{transform:translate(50px,-60px) scale(.85)}}
-    @keyframes mf3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-30px,60px) scale(.9)}66%{transform:translate(40px,-30px) scale(1.1)}}
-    @keyframes mf4{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-40px) scale(1.05)}66%{transform:translate(-60px,30px) scale(.95)}}
-    .cursor-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,59,33,.18) 0%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);z-index:1;opacity:0;transition:opacity .3s ease;will-change:transform}
-    .reveal-text .word{display:inline-block;opacity:0;transform:translateY(20px);filter:blur(4px);transition:opacity .5s ease,transform .5s ease,filter .5s ease}
-    .reveal-text .word.revealed{opacity:1;transform:translateY(0);filter:blur(0)}
-    .reveal-text .word .char{display:inline-block;opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
-    .reveal-text .word.revealed .char{opacity:1;transform:translateY(0)}
-    .glass-card{background:rgba(27,23,40,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:20px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
-    .glass-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,rgba(255,59,33,.3),rgba(255,142,93,.1),transparent,transparent,rgba(255,59,33,.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:0;transition:opacity .4s ease}
-    .glass-card:hover::before{opacity:1}
-    .glass-card:hover{background:rgba(27,23,40,.75);border-color:rgba(255,255,255,.12);transform:translateY(-6px)}
-    .hscroll-wrapper{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:20px 0}
-    .hscroll-wrapper::-webkit-scrollbar{display:none}
-    .hscroll-track{display:flex;gap:24px;padding:0 40px}
-    .hscroll-card{min-width:340px;max-width:400px;scroll-snap-align:center;flex-shrink:0}
-    @media(max-width:768px){.hscroll-card{min-width:280px}}
-    .tilt-card{transition:transform .15s ease,box-shadow .15s ease;transform-style:preserve-3d;will-change:transform}
-    .tilt-card .tilt-shine{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s ease;background:radial-gradient(circle at var(--shine-x,50%) var(--shine-y,50%),rgba(255,255,255,.08) 0%,transparent 60%)}
-    .tilt-card:hover .tilt-shine{opacity:1}
-    .svg-workflow path{stroke-dasharray:500;stroke-dashoffset:500;transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1)}
-    .svg-workflow.drawn path{stroke-dashoffset:0}
-    .workflow-node-g{opacity:0;transform:scale(.8);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)}
-    .workflow-node-g.visible{opacity:1;transform:scale(1)}
-    [data-parallax]{will-change:transform}
-    @media(max-width:768px){.cursor-glow{display:none!important}.mesh-orb{filter:blur(80px);opacity:.2}}
-    @media(max-width:480px){.mesh-orb{display:none}}
-    .toggle-track{width:52px;height:28px;background:rgba(255,255,255,.1);border-radius:14px;position:relative;cursor:pointer;transition:background .3s ease}
-    .toggle-track.active{background:#ff3b21}
-    .toggle-thumb{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 6px rgba(0,0,0,.3)}
-    .toggle-track.active .toggle-thumb{transform:translateX(24px)}
-    .testimonial-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:10px 0}
-    .testimonial-track::-webkit-scrollbar{display:none}
-    .testimonial-card{min-width:320px;max-width:380px;flex-shrink:0;scroll-snap-align:start;background:#1b1728;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px;transition:all .35s ease}
-    .testimonial-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-4px)}
-    .testimonial-card .stars{color:#ff3b21;font-size:14px;letter-spacing:2px;margin-bottom:14px}
-    .testimonial-card .quote{font-size:14px;line-height:1.7;color:rgba(255,255,255,.55);margin-bottom:18px}
-    .testimonial-card .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff8e5d,#ff3b21);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
-    .testimonial-card .author-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.9)}
-    .testimonial-card .author-biz{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
-    .price-check{color:#22c55e;font-weight:700;margin-right:8px}
-    .price-cross{color:rgba(255,255,255,.15);margin-right:8px}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0e0918}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+@keyframes sc{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0e0918;color:#fff;overflow-x:hidden;scroll-behavior:smooth}
+html{scroll-behavior:smooth}
+.gb{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00)}.gb:hover{filter:brightness(1.1)}
+.cd{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
+.gl{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
+.fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}.fu.v{opacity:1;transform:translateY(0)}
+.tg{background:linear-gradient(135deg,#ff8e5d,#ff3b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nb{backdrop-filter:blur(20px);background:rgba(14,9,24,.85)}
+
+.mega{display:none;position:absolute;top:100%;left:0;min-width:320px;background:#1b1728;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;z-index:100}
+.nav-item:hover .mega{display:block}
+.gradient-mesh{position:absolute;inset:0;overflow:hidden;z-index:0}
+.mesh-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.35;will-change:transform}
+.mesh-orb-1{width:600px;height:600px;background:radial-gradient(circle,#ff3b21 0%,transparent 70%);top:-20%;left:-10%;animation:mf1 12s ease-in-out infinite}
+.mesh-orb-2{width:500px;height:500px;background:radial-gradient(circle,#ff8e5d 0%,transparent 70%);bottom:-30%;right:-10%;animation:mf2 15s ease-in-out infinite}
+.mesh-orb-3{width:400px;height:400px;background:radial-gradient(circle,#7c3aed 0%,transparent 70%);top:20%;right:20%;animation:mf3 18s ease-in-out infinite}
+.mesh-orb-4{width:350px;height:350px;background:radial-gradient(circle,#ff3b21 0%,transparent 70%);bottom:10%;left:30%;animation:mf4 14s ease-in-out infinite}
+@keyframes mf1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(80px,50px) scale(1.1)}66%{transform:translate(-40px,80px) scale(.9)}}
+@keyframes mf2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-60px,-40px) scale(1.15)}66%{transform:translate(50px,-60px) scale(.85)}}
+@keyframes mf3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-30px,60px) scale(.9)}66%{transform:translate(40px,-30px) scale(1.1)}}
+@keyframes mf4{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-40px) scale(1.05)}66%{transform:translate(-60px,30px) scale(.95)}}
+.cursor-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,59,33,.18) 0%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);z-index:1;opacity:0;transition:opacity .3s ease;will-change:transform}
+.reveal-text .word{display:inline-block;opacity:0;transform:translateY(20px);filter:blur(4px);transition:opacity .5s ease,transform .5s ease,filter .5s ease}
+.reveal-text .word.revealed{opacity:1;transform:translateY(0);filter:blur(0)}
+.reveal-text .word .char{display:inline-block;opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
+.reveal-text .word.revealed .char{opacity:1;transform:translateY(0)}
+.glass-card{background:rgba(27,23,40,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:20px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.glass-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,rgba(255,59,33,.3),rgba(255,142,93,.1),transparent,transparent,rgba(255,59,33,.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:0;transition:opacity .4s ease}
+.glass-card:hover::before{opacity:1}
+.glass-card:hover{background:rgba(27,23,40,.75);border-color:rgba(255,255,255,.12);transform:translateY(-6px)}
+.tilt-card{transition:transform .15s ease,box-shadow .15s ease;transform-style:preserve-3d;will-change:transform}
+.tilt-card .tilt-shine{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s ease;background:radial-gradient(circle at var(--shine-x,50%) var(--shine-y,50%),rgba(255,255,255,.08) 0%,transparent 60%)}
+.tilt-card:hover .tilt-shine{opacity:1}
+.svg-workflow path{stroke-dasharray:500;stroke-dashoffset:500;transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1)}
+.svg-workflow.drawn path{stroke-dashoffset:0}
+.workflow-node-g{opacity:0;transform:scale(.8);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+.workflow-node-g.visible{opacity:1;transform:scale(1)}
+[data-parallax]{will-change:transform}
+@media(max-width:768px){.cursor-glow{display:none!important}.mesh-orb{filter:blur(80px);opacity:.2}}
+@media(max-width:480px){.mesh-orb{display:none}}
+
+/* F1: How it Works - Horizontal Snap Scroll */
+.hscroll-wrapper{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:20px 0}
+.hscroll-wrapper::-webkit-scrollbar{display:none}
+.hscroll-track{display:flex;gap:24px;padding:0 40px}
+.hscroll-card{min-width:320px;max-width:380px;scroll-snap-align:center;flex-shrink:0}
+@media(max-width:768px){.hscroll-card{min-width:260px}}
+.step-card{background:rgba(27,23,40,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:36px 32px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1);min-height:300px;display:flex;flex-direction:column}
+.step-card:hover{border-color:rgba(255,59,33,.3);transform:translateY(-8px);box-shadow:0 20px 60px rgba(255,59,33,.08)}
+.step-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff3b21,#ff8e5d);opacity:0;transition:opacity .4s ease}
+.step-card:hover::after{opacity:1}
+.step-number{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(255,59,33,.15),rgba(255,142,93,.08));border:1px solid rgba(255,59,33,.2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#ff3b21;margin-bottom:24px;flex-shrink:0}
+.hscroll-dots{display:flex;justify-content:center;gap:8px;margin-top:24px}
+.hscroll-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s ease;cursor:pointer}
+.hscroll-dots .dot.active{background:#ff3b21;width:24px;border-radius:4px}
+.hscroll-line{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.05)}
+.hscroll-line .line{flex:1;height:2px;background:rgba(255,255,255,.06);border-radius:1px;overflow:hidden}
+.hscroll-line .line-fill{height:100%;background:linear-gradient(90deg,#ff3b21,#ff8e5d);width:0;transition:width .6s ease}
+
+/* F2: Testimonials Carousel */
+.testimonial-viewport{overflow:hidden;position:relative}
+.testimonial-track{display:flex;gap:24px;padding:10px 0;cursor:grab;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.testimonial-track.dragging{cursor:grabbing;transition:none;user-select:none}
+.testimonial-track .testimonial-card{min-width:340px;max-width:400px;flex-shrink:0;background:#1b1728;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px;transition:all .35s ease}
+.testimonial-track .testimonial-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-4px)}
+.testimonial-card .stars{color:#ff3b21;font-size:14px;letter-spacing:2px;margin-bottom:14px}
+.testimonial-card .quote{font-size:14px;line-height:1.7;color:rgba(255,255,255,.55);margin-bottom:18px}
+.testimonial-card .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff8e5d,#ff3b21);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
+.testimonial-card .author-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.9)}
+.testimonial-card .author-biz{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+.testimonial-nav{display:flex;justify-content:center;gap:12px;margin-top:24px;align-items:center}
+.testimonial-nav button{width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s ease}
+.testimonial-nav button:hover{border-color:rgba(255,59,33,.4);color:#ff3b21;background:rgba(255,59,33,.08)}
+.testimonial-indicators{display:flex;gap:6px}
+.testimonial-indicators .ind{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s ease}
+.testimonial-indicators .ind.active{background:#ff3b21;width:20px;border-radius:3px}
+
+/* F3: Pricing Glassmorphism */
+.toggle-track{width:52px;height:28px;background:rgba(255,255,255,.1);border-radius:14px;position:relative;cursor:pointer;transition:background .3s ease}
+.toggle-track.active{background:#ff3b21}
+.toggle-thumb{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.toggle-track.active .toggle-thumb{transform:translateX(24px)}
+.price-check{color:#22c55e;font-weight:700;margin-right:8px}
+.price-cross{color:rgba(255,255,255,.15);margin-right:8px}
+.popular-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#ff3b21,#ff8e5d);color:#fff;font-size:10px;font-weight:800;padding:4px 16px;border-radius:0 0 10px 10px;letter-spacing:1px;text-transform:uppercase;z-index:2}
+
+/* F4: Interactive Node Demo */
+.node-canvas{position:relative;width:100%;height:420px;background:rgba(14,9,24,.8);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;touch-action:none}
+.node-canvas .grid-bg{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
+.demo-node{position:absolute;background:#1b1728;border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 16px;cursor:grab;user-select:none;display:flex;align-items:center;gap:10px;z-index:2;transition:box-shadow .2s ease,border-color .2s ease}
+.demo-node:hover{border-color:rgba(255,59,33,.4);box-shadow:0 0 30px rgba(255,59,33,.15)}
+.demo-node:active{cursor:grabbing}
+.demo-node .node-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.demo-node .node-label{font-size:13px;font-weight:600;color:rgba(255,255,255,.9)}
+.demo-node .node-sub{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+.demo-node .port{position:absolute;width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:#0e0918;cursor:crosshair;z-index:3}
+.demo-node .port-out{right:-5px;top:50%;transform:translateY(-50%)}
+.demo-node .port-in{left:-5px;top:50%;transform:translateY(-50%)}
+.demo-node.demo-node{transition:none}
+.demo-node .node-dot{width:8px;height:8px;border-radius:50%;position:absolute}
+.demo-node .node-dot.out{right:-4px;top:50%;transform:translateY(-50%)}
+.demo-node .node-dot.in{left:-4px;top:50%;transform:translateY(-50%)}
+.node-canvas svg.connections{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.node-canvas svg.connections line{stroke:rgba(255,59,33,.4);stroke-width:2;stroke-dasharray:6 4}
+.node-canvas svg.connections line.connected{stroke:#ff3b21;stroke-dasharray:none}
+.node-connect-btn{position:absolute;bottom:20px;right:20px;z-index:5}
+.node-reset-btn{position:absolute;bottom:20px;left:20px;z-index:5}
+
+/* F5: Scroll Morph Background */
+.morph-shape{position:fixed;width:300px;height:300px;pointer-events:none;z-index:0;opacity:.08;transition:clip-path 1.2s cubic-bezier(.16,1,.3,1),background 1.2s ease,transform 1.2s ease}
+.morph-shape.s1{top:10%;right:-50px;background:#ff3b21}
+.morph-shape.s2{bottom:10%;left:-50px;background:#ff8e5d}
+.morph-circle{clip-path:circle(50% at 50% 50%)}
+.morph-blob{clip-path:polygon(50% 0%,80% 10%,100% 35%,95% 70%,70% 100%,30% 95%,5% 70%,0% 35%,20% 10%)}
+.morph-square{clip-path:polygon(10% 10%,90% 10%,90% 90%,10% 90%)}
+.morph-diamond{clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+
+/* F6a: Coming Soon Badge */
+.coming-soon-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:20px;background:linear-gradient(135deg,rgba(255,59,33,.12),rgba(255,142,93,.08));border:1px solid rgba(255,59,33,.25);font-size:12px;font-weight:600;color:#ff8e5d;animation:badge-pulse 2s ease-in-out infinite;margin-bottom:24px}
+.coming-soon-badge .pulse-dot{width:6px;height:6px;border-radius:50%;background:#ff3b21;animation:dot-pulse 1.5s ease-in-out infinite}
+@keyframes badge-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,33,.2)}50%{box-shadow:0 0 0 8px rgba(255,59,33,0)}}
+@keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+
+/* F6b: Particle Canvas */
+#particleCanvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* F6c: Scroll Progress Bar */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ff3b21,#ff8e5d);z-index:9999;transition:width .1s linear;box-shadow:0 0 10px rgba(255,59,33,.5)}
+@media(max-width:768px){.morph-shape{display:none}#particleCanvas{display:none}.scroll-progress{display:none}}
+
+/* Scroll Progress */
+.scroll-progress{width:0}
+
   </style>
 </head>
 <body>
+  <!-- SCROLL PROGRESS BAR -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- PARTICLE CANVAS -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- MORPH BACKGROUND SHAPES -->
+  <div class="morph-shape s1 morph-circle" id="morphShape1"></div>
+  <div class="morph-shape s2 morph-blob" id="morphShape2"></div>
+
   <!-- TOP BANNER -->
   <div class="gb text-center py-2.5 px-4" data-parallax data-speed="0.1">
     <p class="text-white text-[13px] font-medium">🎉 Join our team and CEO Jan at n8n Fest in Berlin on July 16 <a href="#" class="underline ml-1">Reserve your spot →</a></p>
@@ -122,7 +205,7 @@
     </nav>
   </header>
 
-  <!-- HERO — F1 Parallax, F2 Mesh, F3 Cursor Glow, F4 Text Reveal -->
+  <!-- HERO -->
   <section class="relative pt-24 pb-20 px-6 overflow-hidden" id="heroSection">
     <div class="gradient-mesh" aria-hidden="true">
       <div class="mesh-orb mesh-orb-1"></div>
@@ -134,6 +217,8 @@
     <div class="gl w-[700px] h-[700px] bg-[#ff3b21]/15 top-[-250px] right-[-250px]" data-parallax data-speed="0.15"></div>
     <div class="gl w-[500px] h-[500px] bg-[#674545]/20 bottom-[-150px] left-[-150px]" data-parallax data-speed="0.08"></div>
     <div class="max-w-[900px] mx-auto text-center relative z-10">
+      <!-- F6a: Coming Soon Badge -->
+      <div class="fu"><div class="coming-soon-badge mx-auto"><span class="pulse-dot"></span>AI Agents v2.0 — Coming Soon</div></div>
       <div class="fu">
         <h1 class="text-4xl md:text-6xl lg:text-[76px] font-black leading-[1.05] tracking-tight mb-6 reveal-text" id="heroTitle">AI agents and workflows you can see and control</h1>
       </div>
@@ -176,7 +261,8 @@
       </div>
     </div>
   </section>
-  <!-- F8: SVG WORKFLOW DIAGRAM -->
+
+  <!-- SVG WORKFLOW DIAGRAM -->
   <section class="py-20 px-6" id="demo">
     <div class="max-w-[1100px] mx-auto">
       <div class="fu text-center mb-12">
@@ -192,35 +278,15 @@
             <path d="M570 120 C620 120,620 180,620 200" stroke="#60a5fa" stroke-width="2" fill="none" id="svgPath3"/>
             <path d="M620 280 C620 320,500 320,470 280" stroke="#22c55e" stroke-width="2" fill="none" id="svgPath4"/>
             <path d="M370 280 L270 280" stroke="#a855f7" stroke-width="2" fill="none" id="svgPath5"/>
-            <g class="workflow-node-g" id="svgNode1">
-              <rect x="40" y="170" width="90" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-              <text x="85" y="198" text-anchor="middle" fill="white" font-size="13" font-weight="600">⚡ Trigger</text>
-              <text x="85" y="218" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Webhook</text>
-            </g>
-            <g class="workflow-node-g" id="svgNode2">
-              <rect x="270" y="90" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-              <text x="320" y="118" text-anchor="middle" fill="white" font-size="13" font-weight="600">🤖 OpenAI</text>
-              <text x="320" y="138" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Classify</text>
-            </g>
-            <g class="workflow-node-g" id="svgNode3">
-              <rect x="470" y="90" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-              <text x="520" y="118" text-anchor="middle" fill="white" font-size="13" font-weight="600">🔀 IF/Switch</text>
-              <text x="520" y="138" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Route</text>
-            </g>
-            <g class="workflow-node-g" id="svgNode4">
-              <rect x="570" y="250" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-              <text x="620" y="278" text-anchor="middle" fill="white" font-size="13" font-weight="600">💬 Slack</text>
-              <text x="620" y="298" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Notify</text>
-            </g>
-            <g class="workflow-node-g" id="svgNode5">
-              <rect x="200" y="250" width="70" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-              <text x="235" y="278" text-anchor="middle" fill="white" font-size="13" font-weight="600">📧 Gmail</text>
-              <text x="235" y="298" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Reply</text>
-            </g>
+            <g class="workflow-node-g" id="svgNode1"><rect x="40" y="170" width="90" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><text x="85" y="198" text-anchor="middle" fill="white" font-size="13" font-weight="600">⚡ Trigger</text><text x="85" y="218" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Webhook</text></g>
+            <g class="workflow-node-g" id="svgNode2"><rect x="270" y="90" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><text x="320" y="118" text-anchor="middle" fill="white" font-size="13" font-weight="600">🤖 OpenAI</text><text x="320" y="138" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Classify</text></g>
+            <g class="workflow-node-g" id="svgNode3"><rect x="470" y="90" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><text x="520" y="118" text-anchor="middle" fill="white" font-size="13" font-weight="600">🔀 IF/Switch</text><text x="520" y="138" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Route</text></g>
+            <g class="workflow-node-g" id="svgNode4"><rect x="570" y="250" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><text x="620" y="278" text-anchor="middle" fill="white" font-size="13" font-weight="600">💬 Slack</text><text x="620" y="298" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Notify</text></g>
+            <g class="workflow-node-g" id="svgNode5"><rect x="200" y="250" width="70" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><text x="235" y="278" text-anchor="middle" fill="white" font-size="13" font-weight="600">📧 Gmail</text><text x="235" y="298" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Reply</text></g>
           </svg>
         </div>
         <div class="text-center mt-6">
-          <button class="demo-restart" id="demoRestart" onclick="restartSvgDemo()">
+          <button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 text-sm text-white/50 hover:text-white hover:border-white/20 transition" onclick="restartSvgDemo()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v9h-9"/></svg>
             Replay animation
           </button>
@@ -229,7 +295,7 @@
     </div>
   </section>
 
-  <!-- TRUST BADGES (parallax) -->
+  <!-- TRUST BADGES -->
   <section class="py-16 px-6 border-y border-white/5" data-parallax data-speed="0.03">
     <div class="max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10 text-center">
       <div class="fu"><div class="text-3xl font-bold mb-2">Top 50 GitHub.</div><p class="text-white/40 text-sm">Our 193.7k stars place us among the most popular projects.</p></div>
@@ -246,7 +312,7 @@
         <p class="text-white/40 text-base max-w-lg mx-auto">Use pre-built nodes for common apps. Custom API connections for everything else.</p>
       </div>
       <div class="fu overflow-hidden mb-8">
-        <div class="sr">
+        <div style="display:flex;gap:3rem;animation:sc 40s linear infinite">
           <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📊 Google Sheets</span>
           <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🤖 OpenAI</span>
           <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💬 Slack</span>
@@ -274,66 +340,48 @@
       <div class="text-center"><a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Browse all integrations →</a></div>
     </div>
   </section>
-  <!-- F5 & F6: FEATURE SHOWCASE — Horizontal Scroll + Glassmorphism -->
-  <section class="py-20 px-6" id="featuresSection">
+
+  <!-- F1: HOW IT WORKS — Horizontal Snap Scroll -->
+  <section class="py-20 px-6" id="howItWorks">
     <div class="max-w-[1100px] mx-auto">
       <div class="fu text-center mb-12">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4">Built for teams that<br><span class="tg">move fast</span></h2>
-        <p class="text-white/40 text-base max-w-lg mx-auto">Scroll through our core features →</p>
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">How it <span class="tg">works</span></h2>
+        <p class="text-white/40 text-base max-w-lg mx-auto">Four simple steps to automate anything. Scroll horizontally →</p>
       </div>
       <div class="fu">
         <div class="hscroll-wrapper" id="hscrollWrapper">
           <div class="hscroll-track">
-            <!-- F5+7: Glass Card + Tilt -->
-            <div class="hscroll-card">
-              <div class="glass-card tilt-card p-8 h-full" data-tilt>
-                <div class="tilt-shine"></div>
-                <div class="text-3xl mb-4">⚡</div>
-                <h3 class="text-xl font-bold mb-3">Visual Workflow Builder</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Drag and drop nodes to build powerful automations. No code required — but code when you need it.</p>
-              </div>
-            </div>
-            <div class="hscroll-card">
-              <div class="glass-card tilt-card p-8 h-full" data-tilt>
-                <div class="tilt-shine"></div>
-                <div class="text-3xl mb-4">🤖</div>
-                <h3 class="text-xl font-bold mb-3">AI Agents</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Build autonomous agents with any LLM. Connect to your data, tools, and APIs with full visibility.</p>
-              </div>
-            </div>
-            <div class="hscroll-card">
-              <div class="glass-card tilt-card p-8 h-full" data-tilt>
-                <div class="tilt-shine"></div>
-                <div class="text-3xl mb-4">🔗</div>
-                <h3 class="text-xl font-bold mb-3">500+ Integrations</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Connect to anything — from Google Sheets to custom APIs. Pre-built nodes for every major platform.</p>
-              </div>
-            </div>
-            <div class="hscroll-card">
-              <div class="glass-card tilt-card p-8 h-full" data-tilt>
-                <div class="tilt-shine"></div>
-                <div class="text-3xl mb-4">🔒</div>
-                <h3 class="text-xl font-bold mb-3">Self-Hosted</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Deploy on your own infrastructure. Docker, Kubernetes, or bare metal — your data stays with you.</p>
-              </div>
-            </div>
-            <div class="hscroll-card">
-              <div class="glass-card tilt-card p-8 h-full" data-tilt>
-                <div class="tilt-shine"></div>
-                <div class="text-3xl mb-4">👥</div>
-                <h3 class="text-xl font-bold mb-3">Human-in-the-Loop</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Add approval steps, manual triggers, and interactive nodes. Keep humans in control of critical decisions.</p>
-              </div>
-            </div>
-            <div class="hscroll-card">
-              <div class="glass-card tilt-card p-8 h-full" data-tilt>
-                <div class="tilt-shine"></div>
-                <div class="text-3xl mb-4">📊</div>
-                <h3 class="text-xl font-bold mb-3">Observability</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Trace every execution. Debug with full logs, execution history, and real-time monitoring.</p>
-              </div>
-            </div>
+            <div class="hscroll-card"><div class="step-card">
+              <div class="step-number">01</div>
+              <h3 class="text-xl font-bold mb-3">Choose a trigger</h3>
+              <p class="text-white/40 text-sm leading-relaxed">Start with a webhook, schedule, email, or any of 500+ integrations. Define when your workflow fires.</p>
+              <div class="hscroll-line"><span class="text-[10px] text-white/20">WEBHOOK</span><div class="line"><div class="line-fill" data-width="100"></div></div><span class="text-[10px] text-white/20">ACTIVE</span></div>
+            </div></div>
+            <div class="hscroll-card"><div class="step-card">
+              <div class="step-number">02</div>
+              <h3 class="text-xl font-bold mb-3">Add AI processing</h3>
+              <p class="text-white/40 text-sm leading-relaxed">Drop in an AI node — OpenAI, Claude, or any model. Classify, extract, transform, or generate.</p>
+              <div class="hscroll-line"><span class="text-[10px] text-white/20">PROMPT</span><div class="line"><div class="line-fill" data-width="70"></div></div><span class="text-[10px] text-white/20">PROCESSING</span></div>
+            </div></div>
+            <div class="hscroll-card"><div class="step-card">
+              <div class="step-number">03</div>
+              <h3 class="text-xl font-bold mb-3">Route the output</h3>
+              <p class="text-white/40 text-sm leading-relaxed">Use IF/Switch nodes to branch logic. Send to different paths based on AI decisions or data conditions.</p>
+              <div class="hscroll-line"><span class="text-[10px] text-white/20">CONDITION</span><div class="line"><div class="line-fill" data-width="50"></div></div><span class="text-[10px] text-white/20">BRANCH</span></div>
+            </div></div>
+            <div class="hscroll-card"><div class="step-card">
+              <div class="step-number">04</div>
+              <h3 class="text-xl font-bold mb-3">Take action</h3>
+              <p class="text-white/40 text-sm leading-relaxed">Notify via Slack, update your database, send an email, or trigger another workflow. Full control, zero magic.</p>
+              <div class="hscroll-line"><span class="text-[10px] text-white/20">EXECUTE</span><div class="line"><div class="line-fill" data-width="100"></div></div><span class="text-[10px] text-white/20">DONE ✓</span></div>
+            </div></div>
           </div>
+        </div>
+        <div class="hscroll-dots" id="hscrollDots">
+          <div class="dot active" data-idx="0"></div>
+          <div class="dot" data-idx="1"></div>
+          <div class="dot" data-idx="2"></div>
+          <div class="dot" data-idx="3"></div>
         </div>
       </div>
     </div>
@@ -342,7 +390,7 @@
   <!-- FEATURE: Build AI agents (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+      <div class="fu glass-card tilt-card p-8 md:p-14 relative overflow-hidden" data-tilt>
         <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#ff3b21]/10 top-[-150px] right-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
@@ -370,7 +418,7 @@
   <!-- FEATURE: Complex AI (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+      <div class="fu glass-card tilt-card p-8 md:p-14 relative overflow-hidden" data-tilt>
         <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#674545]/20 bottom-[-150px] left-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
@@ -395,7 +443,7 @@
   <!-- FEATURE: Runs where you decide (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+      <div class="fu glass-card tilt-card p-8 md:p-14 relative overflow-hidden" data-tilt>
         <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#a85c5c]/15 top-[-150px] left-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
@@ -422,7 +470,7 @@
   <!-- FEATURE: Human-in-the-loop (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+      <div class="fu glass-card tilt-card p-8 md:p-14 relative overflow-hidden" data-tilt>
         <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#262149]/30 bottom-[-150px] right-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
@@ -442,7 +490,34 @@
       </div>
     </div>
   </section>
-  <!-- TESTIMONIALS -->
+
+  <!-- F4: INTERACTIVE NODE BUILDER DEMO -->
+  <section class="py-20 px-6" id="nodeDemo">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="fu text-center mb-12">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">Try the <span class="tg">node builder</span></h2>
+        <p class="text-white/40 text-base max-w-lg mx-auto">Drag nodes, connect them, see how it works. This is a live preview of the full builder.</p>
+      </div>
+      <div class="fu">
+        <div class="node-canvas" id="nodeCanvas">
+          <div class="grid-bg"></div>
+          <svg class="connections" id="connectionsSvg"></svg>
+          <!-- Nodes will be created by JS -->
+          <div class="node-connect-btn">
+            <button onclick="connectDemoNodes()" class="px-4 py-2 rounded-lg border border-[#ff3b21]/30 bg-[#ff3b21]/10 text-[#ff8e5d] text-xs font-semibold hover:bg-[#ff3b21]/20 transition">Connect All</button>
+          </div>
+          <div class="node-reset-btn">
+            <button onclick="resetDemoNodes()" class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-white/50 text-xs font-semibold hover:text-white transition">Reset</button>
+          </div>
+        </div>
+        <div class="text-center mt-6">
+          <a href="builder.html" class="gb px-8 py-4 rounded-xl text-[15px] font-bold inline-flex items-center gap-2">Try Full Builder →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- F2: TESTIMONIALS — Auto-slide + Drag -->
   <section class="py-20 px-6" id="testimonials">
     <div class="max-w-[1100px] mx-auto">
       <div class="fu text-center mb-12">
@@ -450,17 +525,29 @@
         <p class="text-white/40 text-base max-w-lg mx-auto">Hear from local UMKM owners who automated their workflows.</p>
       </div>
       <div class="fu">
-        <div class="testimonial-track">
-          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"Sejak pakai n8n, pesanan online di Tokopedia langsung otomatis masuk Google Sheets dan notifikasi ke WhatsApp. Gak perlu cek manual lagi — hidup jadi lebih gampang!"</div><div class="flex items-center gap-3"><div class="avatar">RS</div><div><div class="author-name">Rina Susanti</div><div class="author-biz">Toko Sembako Online — Majalengka Kota</div></div></div></div>
-          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"Workflow automasi bikin sistem reminder pelanggan jadi jalan sendiri. Bayaran overdue? Langsung WA otomatis. Customer service saya tinggal fokus yang urgent aja."</div><div class="flex items-center gap-3"><div class="avatar">DK</div><div><div class="author-name">Dedi Kusnadi</div><div class="author-biz">Bengkel Motor Kusna — Cipicung</div></div></div></div>
-          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"Butuh 2 bulan pindah dari manual ke fully automated. Sekarang data stok, order dari Shopee, sama invoice semuanya nyatu. Efficiency naik 3x lipat, beneran."</div><div class="flex items-center gap-3"><div class="avatar">AW</div><div><div class="author-name">Ayu Wulandari</div><div class="author-biz">Kue Majalengka — Jatitujuh</div></div></div></div>
-          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"As a small warung owner, I never thought I could afford automation. But n8n's free tier gave me everything. Sekarang supply ordering fully automated — tinggal approve di HP."</div><div class="flex items-center gap-3"><div class="avatar">HS</div><div><div class="author-name">Hendra Setiawan</div><div class="author-biz">Warung Hendra — Ciamis (Majalengka border)</div></div></div></div>
+        <div class="testimonial-viewport">
+          <div class="testimonial-track" id="testimonialTrack">
+            <div class="testimonial-card"><div class="stars">★★★★★</div><div class="quote">"Sejak pakai n8n, pesanan online di Tokopedia langsung otomatis masuk Google Sheets dan notifikasi ke WhatsApp. Gak perlu cek manual lagi — hidup jadi lebih gampang!"</div><div class="flex items-center gap-3"><div class="avatar">RS</div><div><div class="author-name">Rina Susanti</div><div class="author-biz">Toko Sembako Online — Majalengka Kota</div></div></div></div>
+            <div class="testimonial-card"><div class="stars">★★★★★</div><div class="quote">"Workflow automasi bikin sistem reminder pelanggan jadi jalan sendiri. Bayaran overdue? Langsung WA otomatis. Customer service saya tinggal fokus yang urgent aja."</div><div class="flex items-center gap-3"><div class="avatar">DK</div><div><div class="author-name">Dedi Kusnadi</div><div class="author-biz">Bengkel Motor Kusna — Cipicung</div></div></div></div>
+            <div class="testimonial-card"><div class="stars">★★★★★</div><div class="quote">"Butuh 2 bulan pindah dari manual ke fully automated. Sekarang data stok, order dari Shopee, sama invoice semuanya nyatu. Efficiency naik 3x lipat, beneran."</div><div class="flex items-center gap-3"><div class="avatar">AW</div><div><div class="author-name">Ayu Wulandari</div><div class="author-biz">Kue Majalengka — Jatitujuh</div></div></div></div>
+            <div class="testimonial-card"><div class="stars">★★★★★</div><div class="quote">"As a small warung owner, I never thought I could afford automation. But n8n's free tier gave me everything. Sekarang supply ordering fully automated — tinggal approve di HP."</div><div class="flex items-center gap-3"><div class="avatar">HS</div><div><div class="author-name">Hendra Setiawan</div><div class="author-biz">Warung Hendra — Ciamis (Majalengka border)</div></div></div></div>
+          </div>
+        </div>
+        <div class="testimonial-nav">
+          <button onclick="prevTestimonial()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+          <div class="testimonial-indicators" id="testimonialIndicators">
+            <div class="ind active" data-idx="0"></div>
+            <div class="ind" data-idx="1"></div>
+            <div class="ind" data-idx="2"></div>
+            <div class="ind" data-idx="3"></div>
+          </div>
+          <button onclick="nextTestimonial()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PRICING -->
+  <!-- F3: PRICING — Glassmorphism -->
   <section class="py-20 px-6" id="pricing">
     <div class="max-w-[1100px] mx-auto">
       <div class="fu text-center mb-8">
@@ -473,9 +560,28 @@
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <div class="fu glass-card tilt-card p-8" data-tilt><div class="tilt-shine"></div><div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Free</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="priceFree">$0</span><span class="text-white/30 text-sm mb-1">/month</span></div></div><p class="text-white/40 text-xs mb-6">Perfect for trying out workflow automation.</p><a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Get started free</a><ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 2,000 executions / month</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 5 active workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Community support</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> AI agents</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Priority support</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Custom domains</li></ul></div>
-        <div class="fu glass-card tilt-card p-8 relative" data-tilt style="border-color:rgba(255,59,33,.3)"><div class="tilt-shine"></div><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ff3b21] text-[10px] font-bold px-3 py-1 rounded-full">MOST POPULAR</div><div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Pro</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="pricePro">$20</span><span class="text-white/30 text-sm mb-1">/month</span></div></div><p class="text-white/40 text-xs mb-6">For growing teams and serious automation.</p><a href="#" class="block text-center w-full py-3 rounded-xl gb text-sm font-bold mb-6">Start 14-day trial</a><ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> <span id="execPro">20,000</span> executions / month</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> AI agents &amp; RAG</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Priority email support</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Custom domains</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Dedicated account manager</li></ul></div>
-        <div class="fu glass-card tilt-card p-8" data-tilt><div class="tilt-shine"></div><div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Enterprise</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="priceEnt">Custom</span><span class="text-white/30 text-sm mb-1" id="priceEntSub"></span></div></div><p class="text-white/40 text-xs mb-6">For organizations that need full control.</p><a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Talk to sales</a><ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited executions</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Advanced AI &amp; RAG</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> SSO / SAML / LDAP</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Dedicated account manager</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> On-premise deployment</li></ul></div>
+        <!-- Free -->
+        <div class="fu glass-card tilt-card p-8" data-tilt><div class="tilt-shine"></div>
+          <div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Free</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="priceFree">$0</span><span class="text-white/30 text-sm mb-1">/month</span></div></div>
+          <p class="text-white/40 text-xs mb-6">Perfect for trying out workflow automation.</p>
+          <a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Get started free</a>
+          <ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 2,000 executions / month</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 5 active workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Community support</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> AI agents</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Priority support</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Custom domains</li></ul>
+        </div>
+        <!-- Pro -->
+        <div class="fu glass-card tilt-card p-8 relative" data-tilt style="border-color:rgba(255,59,33,.3)"><div class="tilt-shine"></div>
+          <div class="popular-badge">MOST POPULAR</div>
+          <div class="mb-6 mt-2"><div class="text-sm font-semibold text-white/50 mb-1">Pro</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="pricePro">$20</span><span class="text-white/30 text-sm mb-1">/month</span></div></div>
+          <p class="text-white/40 text-xs mb-6">For growing teams and serious automation.</p>
+          <a href="#" class="block text-center w-full py-3 rounded-xl gb text-sm font-bold mb-6">Start 14-day trial</a>
+          <ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> <span id="execPro">20,000</span> executions / month</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> AI agents &amp; RAG</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Priority email support</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Custom domains</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Dedicated account manager</li></ul>
+        </div>
+        <!-- Enterprise -->
+        <div class="fu glass-card tilt-card p-8" data-tilt><div class="tilt-shine"></div>
+          <div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Enterprise</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="priceEnt">Custom</span><span class="text-white/30 text-sm mb-1" id="priceEntSub"></span></div></div>
+          <p class="text-white/40 text-xs mb-6">For organizations that need full control.</p>
+          <a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Talk to sales</a>
+          <ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited executions</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Advanced AI &amp; RAG</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> SSO / SAML / LDAP</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Dedicated account manager</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> On-premise deployment</li></ul>
+        </div>
       </div>
     </div>
   </section>
@@ -502,189 +608,475 @@
       <div><h4 class="font-semibold text-xs text-white mb-4">Company</h4><ul class="space-y-2.5"><li><a href="#" class="text-white/40 hover:text-white text-xs transition">About</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Careers</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Contact</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security</a></li></ul></div>
     </div>
     <div class="max-w-[1300px] mx-auto border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-white/20 text-xs">© 2026 LM Studio. Inspired by n8n.</p>
+      <p class="text-white/20 text-xs">&copy; 2026 LM Studio. Inspired by n8n.</p>
       <div class="flex items-center gap-5"><a href="#" class="text-white/30 hover:text-white text-xs transition">Instagram</a><a href="#" class="text-white/30 hover:text-white text-xs transition">GitHub</a><a href="#" class="text-white/30 hover:text-white text-xs transition">Discord</a></div>
     </div>
   </footer>
-  <script>
-    // ═══ FEATURE 1: Parallax Scroll ═══
-    const isMobile = window.innerWidth < 768;
-    if (!isMobile) {
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            const scrollY = window.scrollY;
-            document.querySelectorAll('[data-parallax]').forEach(el => {
-              const speed = parseFloat(el.dataset.speed) || 0.1;
-              el.style.transform = `translateY(${scrollY * speed}px)`;
-            });
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }, { passive: true });
-    }
-
-    // ═══ FEATURE 3: Cursor Glow ═══
-    if (!isMobile) {
-      const heroSection = document.getElementById('heroSection');
-      const cursorGlow = document.getElementById('cursorGlow');
-      let glowVisible = false;
-      heroSection.addEventListener('mousemove', e => {
-        const rect = heroSection.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        cursorGlow.style.left = x + 'px';
-        cursorGlow.style.top = y + 'px';
-        if (!glowVisible) {
-          cursorGlow.style.opacity = '1';
-          glowVisible = true;
-        }
+<script>
+// ═══ F6c: SCROLL PROGRESS BAR ═══
+(function(){
+  const bar=document.getElementById('scrollProgress');
+  if(!bar)return;
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const h=document.documentElement.scrollHeight-window.innerHeight;
+        const pct=h>0?(window.scrollY/h)*100:0;
+        bar.style.width=pct+'%';
+        ticking=false;
       });
-      heroSection.addEventListener('mouseleave', () => {
-        cursorGlow.style.opacity = '0';
-        glowVisible = false;
-      });
+      ticking=true;
     }
+  },{passive:true});
+})();
 
-    // ═══ FEATURE 4: Text Reveal Animation ═══
-    function initTextReveal() {
-      document.querySelectorAll('.reveal-text').forEach(el => {
-        const text = el.textContent.trim();
-        el.innerHTML = '';
-        const words = text.split(/\s+/);
-        words.forEach((word, wi) => {
-          const wordEl = document.createElement('span');
-          wordEl.className = 'word';
-          word.split('').forEach((ch, ci) => {
-            const charEl = document.createElement('span');
-            charEl.className = 'char';
-            charEl.textContent = ch;
-            charEl.style.transitionDelay = (wi * 60 + ci * 25) + 'ms';
-            wordEl.appendChild(charEl);
-          });
-          if (wi < words.length - 1) {
-            wordEl.appendChild(document.createTextNode(' '));
-          }
-          wordEl.style.transitionDelay = (wi * 80) + 'ms';
-          el.appendChild(wordEl);
+// ═══ FEATURE 1: Parallax ═══
+const isMobile=window.innerWidth<768;
+if(!isMobile){
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const scrollY=window.scrollY;
+        document.querySelectorAll('[data-parallax]').forEach(el=>{
+          const speed=parseFloat(el.dataset.speed)||0.1;
+          el.style.transform=`translateY(${scrollY*speed}px)`;
         });
+        ticking=false;
       });
+      ticking=true;
     }
-    initTextReveal();
+  },{passive:true});
+}
 
-    // Reveal on hero visibility
-    const heroObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.querySelectorAll('.word').forEach(w => w.classList.add('revealed'));
-          heroObs.unobserve(e.target);
-        }
+// ═══ FEATURE 3: Cursor Glow ═══
+if(!isMobile){
+  const heroSection=document.getElementById('heroSection');
+  const cursorGlow=document.getElementById('cursorGlow');
+  let glowVisible=false;
+  heroSection.addEventListener('mousemove',e=>{
+    const rect=heroSection.getBoundingClientRect();
+    cursorGlow.style.left=(e.clientX-rect.left)+'px';
+    cursorGlow.style.top=(e.clientY-rect.top)+'px';
+    if(!glowVisible){cursorGlow.style.opacity='1';glowVisible=true;}
+  });
+  heroSection.addEventListener('mouseleave',()=>{cursorGlow.style.opacity='0';glowVisible=false;});
+}
+
+// ═══ FEATURE 4: Text Reveal ═══
+function initTextReveal(){
+  document.querySelectorAll('.reveal-text').forEach(el=>{
+    const text=el.textContent.trim();
+    el.innerHTML='';
+    const words=text.split(/\\s+/);
+    words.forEach((word,wi)=>{
+      const wordEl=document.createElement('span');
+      wordEl.className='word';
+      word.split('').forEach((ch,ci)=>{
+        const charEl=document.createElement('span');
+        charEl.className='char';
+        charEl.textContent=ch;
+        charEl.style.transitionDelay=(wi*60+ci*25)+'ms';
+        wordEl.appendChild(charEl);
       });
-    }, { threshold: 0.3 });
-    document.querySelectorAll('.reveal-text').forEach(el => heroObs.observe(el));
+      if(wi<words.length-1)wordEl.appendChild(document.createTextNode(' '));
+      wordEl.style.transitionDelay=(wi*80)+'ms';
+      el.appendChild(wordEl);
+    });
+  });
+}
+initTextReveal();
 
-    // ═══ General fade-up observer ═══
-    const obs = new IntersectionObserver(e => {
-      e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('v'); obs.unobserve(x.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+const heroObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.querySelectorAll('.word').forEach(w=>w.classList.add('revealed'));heroObs.unobserve(e.target);}
+  });
+},{threshold:0.3});
+document.querySelectorAll('.reveal-text').forEach(el=>heroObs.observe(el));
 
-    // ═══ FEATURE 7: 3D Tilt Effect ═══
-    if (!isMobile) {
-      document.querySelectorAll('[data-tilt]').forEach(card => {
-        card.addEventListener('mousemove', e => {
-          const rect = card.getBoundingClientRect();
-          const x = (e.clientX - rect.left) / rect.width;
-          const y = (e.clientY - rect.top) / rect.height;
-          const tiltX = (y - 0.5) * -8;
-          const tiltY = (x - 0.5) * 8;
-          card.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02,1.02,1.02)`;
-          const shine = card.querySelector('.tilt-shine');
-          if (shine) {
-            shine.style.setProperty('--shine-x', (x * 100) + '%');
-            shine.style.setProperty('--shine-y', (y * 100) + '%');
-          }
-        });
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)';
-        });
-      });
-    }
+// ═══ General fade-up ═══
+const obs=new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');obs.unobserve(x.target);}});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
 
-    // ═══ FEATURE 8: SVG Workflow Animation ═══
-    let svgDemoTimer = null;
-    const svgNodes = ['svgNode1','svgNode2','svgNode3','svgNode4','svgNode5'];
-    const svgPaths = ['svgPath1','svgPath2','svgPath3','svgPath4','svgPath5'];
-    const svgWorkflow = document.getElementById('svgWorkflow');
-    let svgStep = 0;
+// ═══ FEATURE 7: 3D Tilt ═══
+if(!isMobile){
+  document.querySelectorAll('[data-tilt]').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const rect=card.getBoundingClientRect();
+      const x=(e.clientX-rect.left)/rect.width;
+      const y=(e.clientY-rect.top)/rect.height;
+      const tiltX=(y-0.5)*-8;
+      const tiltY=(x-0.5)*8;
+      card.style.transform=`perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02,1.02,1.02)`;
+      const shine=card.querySelector('.tilt-shine');
+      if(shine){shine.style.setProperty('--shine-x',(x*100)+'%');shine.style.setProperty('--shine-y',(y*100)+'%');}
+    });
+    card.addEventListener('mouseleave',()=>{card.style.transform='perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)';});
+  });
+}
 
-    function runSvgDemo() {
-      if (svgStep >= svgNodes.length) return;
-      // Show node
-      const node = document.getElementById(svgNodes[svgStep]);
-      if (node) node.classList.add('visible');
-      // Draw path to next
-      if (svgStep > 0) {
-        const path = document.getElementById(svgPaths[svgStep - 1]);
-        if (path) {
-          svgWorkflow.classList.add('drawn');
-          path.style.strokeDashoffset = '0';
+// ═══ F1: HORIZONTAL SCROLL — How it Works ═══
+(function(){
+  const wrapper=document.getElementById('hscrollWrapper');
+  const dots=document.querySelectorAll('#hscrollDots .dot');
+  if(!wrapper||!dots.length)return;
+  const cards=wrapper.querySelectorAll('.hscroll-card');
+  wrapper.addEventListener('scroll',()=>{
+    const scrollLeft=wrapper.scrollLeft;
+    const cardWidth=cards[0]?cards[0].offsetWidth+24:344;
+    const idx=Math.round(scrollLeft/cardWidth);
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+    // Animate progress lines
+    cards.forEach((card,i)=>{
+      const lineFill=card.querySelector('.line-fill');
+      if(lineFill){
+        const cardLeft=card.offsetLeft-scrollLeft;
+        const visible=cardLeft<wrapper.offsetWidth&&cardLeft+card.offsetWidth>0;
+        if(visible){lineFill.style.width=lineFill.dataset.width+'%';}
+      }
+    });
+  },{passive:true});
+  dots.forEach(d=>{
+    d.addEventListener('click',()=>{
+      const idx=parseInt(d.dataset.idx);
+      const cardWidth=cards[0]?cards[0].offsetWidth+24:344;
+      wrapper.scrollTo({left:idx*cardWidth,behavior:'smooth'});
+    });
+  });
+  // Animate lines on scroll
+  wrapper.addEventListener('scroll',()=>{
+    cards.forEach(card=>{
+      const lineFill=card.querySelector('.line-fill');
+      if(lineFill){
+        const rect=card.getBoundingClientRect();
+        const wrapperRect=wrapper.getBoundingClientRect();
+        if(rect.left<wrapperRect.right&&rect.right>wrapperRect.left){
+          lineFill.style.width=lineFill.dataset.width+'%';
         }
       }
-      svgStep++;
-      svgDemoTimer = setTimeout(runSvgDemo, 800);
-    }
+    });
+  },{passive:true});
+})();
 
-    function restartSvgDemo() {
-      clearTimeout(svgDemoTimer);
-      svgStep = 0;
-      svgNodes.forEach(id => { const n = document.getElementById(id); if(n) n.classList.remove('visible'); });
-      svgPaths.forEach(id => { const p = document.getElementById(id); if(p) p.style.strokeDashoffset = '500'; });
-      svgWorkflow.classList.remove('drawn');
-      setTimeout(runSvgDemo, 400);
-    }
+// ═══ F2: TESTIMONIALS — Auto-slide + Drag ═══
+(function(){
+  const track=document.getElementById('testimonialTrack');
+  const indicators=document.querySelectorAll('#testimonialIndicators .ind');
+  if(!track)return;
+  let currentIdx=0;
+  const cards=track.querySelectorAll('.testimonial-card');
+  const total=cards.length;
+  let autoTimer=null;
+  let isDragging=false;
+  let startX=0;
+  let startTranslate=0;
+  let currentTranslate=0;
 
-    const svgObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting && svgStep === 0) {
-          runSvgDemo();
-          svgObs.unobserve(e.target);
-        }
+  function getCardWidth(){
+    if(!cards[0])return 364;
+    return cards[0].offsetWidth+24;
+  }
+  function updatePosition(animate){
+    if(animate)track.style.transition='transform .5s cubic-bezier(.16,1,.3,1)';
+    else track.style.transition='none';
+    track.style.transform=`translateX(${-currentTranslate}px)`;
+    indicators.forEach((d,i)=>d.classList.toggle('active',i===currentIdx));
+  }
+  function goTo(idx){
+    currentIdx=((idx%total)+total)%total;
+    currentTranslate=currentIdx*getCardWidth();
+    updatePosition(true);
+  }
+  function next(){goTo(currentIdx+1);}
+  function prev(){goTo(currentIdx-1);}
+
+  // Auto-slide
+  function startAuto(){autoTimer=setInterval(next,4000);}
+  function stopAuto(){clearInterval(autoTimer);}
+
+  // Drag-to-scroll
+  track.addEventListener('mousedown',e=>{isDragging=true;startX=e.clientX;startTranslate=currentTranslate;track.classList.add('dragging');stopAuto();e.preventDefault();});
+  track.addEventListener('mousemove',e=>{
+    if(!isDragging)return;
+    const diff=e.clientX-startX;
+    currentTranslate=startTranslate-diff;
+    updatePosition(false);
+  });
+  track.addEventListener('mouseup',e=>{
+    if(!isDragging)return;
+    isDragging=false;
+    track.classList.remove('dragging');
+    const diff=e.clientX-startX;
+    if(Math.abs(diff)>50){diff>0?prev():next();}
+    else goTo(currentIdx);
+    startAuto();
+  });
+  track.addEventListener('mouseleave',()=>{
+    if(isDragging){isDragging=false;track.classList.remove('dragging');goTo(currentIdx);startAuto();}
+  });
+
+  // Touch support
+  track.addEventListener('touchstart',e=>{isDragging=true;startX=e.touches[0].clientX;startTranslate=currentTranslate;track.classList.add('dragging');stopAuto();},{passive:true});
+  track.addEventListener('touchmove',e=>{
+    if(!isDragging)return;
+    const diff=e.touches[0].clientX-startX;
+    currentTranslate=startTranslate-diff;
+    updatePosition(false);
+  },{passive:true});
+  track.addEventListener('touchend',e=>{
+    if(!isDragging)return;
+    isDragging=false;
+    track.classList.remove('dragging');
+    const diff=e.changedTouches[0].clientX-startX;
+    if(Math.abs(diff)>50){diff>0?prev():next();}
+    else goTo(currentIdx);
+    startAuto();
+  });
+
+  // Nav buttons
+  window.nextTestimonial=function(){stopAuto();next();startAuto();};
+  window.prevTestimonial=function(){stopAuto();prev();startAuto();};
+
+  // Indicator clicks
+  indicators.forEach(d=>{d.addEventListener('click',()=>{stopAuto();goTo(parseInt(d.dataset.idx));startAuto();});});
+
+  // Pause on hover
+  track.addEventListener('mouseenter',stopAuto);
+  track.addEventListener('mouseleave',()=>{if(!isDragging)startAuto();});
+
+  startAuto();
+})();
+
+// ═══ PRICING TOGGLE ═══
+let isYearly=false;
+function togglePricing(){
+  isYearly=!isYearly;
+  const track=document.getElementById('pricingToggle');
+  const lblM=document.getElementById('lblMonthly');
+  const lblY=document.getElementById('lblYearly');
+  track.classList.toggle('active',isYearly);
+  lblM.classList.toggle('text-white',!isYearly);
+  lblM.classList.toggle('text-white/40',isYearly);
+  lblM.classList.toggle('font-semibold',!isYearly);
+  lblM.classList.toggle('font-medium',isYearly);
+  lblY.classList.toggle('text-white',isYearly);
+  lblY.classList.toggle('text-white/40',!isYearly);
+  lblY.classList.toggle('font-semibold',isYearly);
+  lblY.classList.toggle('font-medium',!isYearly);
+  if(isYearly){
+    document.getElementById('pricePro').textContent='$16';
+    document.getElementById('execPro').textContent='40,000';
+    document.getElementById('priceEnt').textContent='Custom';
+    document.getElementById('priceEntSub').textContent='/year';
+  }else{
+    document.getElementById('pricePro').textContent='$20';
+    document.getElementById('execPro').textContent='20,000';
+    document.getElementById('priceEnt').textContent='Custom';
+    document.getElementById('priceEntSub').textContent='';
+  }
+}
+
+// ═══ F4: INTERACTIVE NODE BUILDER DEMO ═══
+(function(){
+  const canvas=document.getElementById('nodeCanvas');
+  if(!canvas)return;
+  const svg=document.getElementById('connectionsSvg');
+
+  const nodes=[
+    {id:'n1',label:'⚡ Trigger',sub:'Webhook',x:60,y:120,color:'#ff3b21'},
+    {id:'n2',label:'🤖 OpenAI',sub:'Classify',x:300,y:60,color:'#ff8e5d'},
+    {id:'n3',label:'💬 Slack',sub:'Notify',x:540,y:120,color:'#22c55e'}
+  ];
+
+  const connections=[[0,1],[1,2]];
+  let connected=false;
+
+  nodes.forEach(n=>{
+    const el=document.createElement('div');
+    el.className='demo-node';
+    el.id=n.id;
+    el.style.left=n.x+'px';
+    el.style.top=n.y+'px';
+    el.innerHTML=`<div class="node-icon" style="background:${n.color}20">${n.label.split(' ')[0]}</div><div><div class="node-label">${n.label.split(' ').slice(1).join(' ')}</div><div class="node-sub">${n.sub}</div></div>`;
+    canvas.appendChild(el);
+
+    // Drag
+    let dragging=false,offX=0,offY=0;
+    const onMove=e=>{
+      if(!dragging)return;
+      const cx=e.clientX||e.touches[0].clientX;
+      const cy=e.clientY||e.touches[0].clientY;
+      const rect=canvas.getBoundingClientRect();
+      let nx=cx-rect.left-offX;
+      let ny=cy-rect.top-offY;
+      nx=Math.max(0,Math.min(rect.width-el.offsetWidth,nx));
+      ny=Math.max(0,Math.min(rect.height-el.offsetHeight,ny));
+      el.style.left=nx+'px';
+      el.style.top=ny+'px';
+      n.x=nx;n.y=ny;
+      if(connected)drawConnections();
+    };
+    const onUp=()=>{dragging=false;document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);document.removeEventListener('touchmove',onMove);document.removeEventListener('touchend',onUp);};
+    el.addEventListener('mousedown',e=>{dragging=true;offX=e.clientX-el.getBoundingClientRect().left;offY=e.clientY-el.getBoundingClientRect().top;document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);e.preventDefault();});
+    el.addEventListener('touchstart',e=>{dragging=true;offX=e.touches[0].clientX-el.getBoundingClientRect().left;offY=e.touches[0].clientY-el.getBoundingClientRect().top;document.addEventListener('touchmove',onMove);document.addEventListener('touchend',onUp);},{passive:true});
+  });
+
+  function drawConnections(){
+    svg.innerHTML='';
+    connections.forEach(([a,b])=>{
+      const elA=document.getElementById(nodes[a].id);
+      const elB=document.getElementById(nodes[b].id);
+      if(!elA||!elB)return;
+      const x1=parseInt(elA.style.left)+elA.offsetWidth;
+      const y1=parseInt(elA.style.top)+elA.offsetHeight/2;
+      const x2=parseInt(elB.style.left);
+      const y2=parseInt(elB.style.top)+elB.offsetHeight/2;
+      const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',x1);line.setAttribute('y1',y1);
+      line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+      line.classList.add('connected');
+      svg.appendChild(line);
+    });
+  }
+
+  window.connectDemoNodes=function(){
+    connected=true;
+    drawConnections();
+  };
+  window.resetDemoNodes=function(){
+    connected=false;
+    svg.innerHTML='';
+    nodes.forEach((n,i)=>{
+      const defaults=[{x:60,y:120},{x:300,y:60},{x:540,y:120}];
+      n.x=defaults[i].x;n.y=defaults[i].y;
+      const el=document.getElementById(n.id);
+      if(el){el.style.left=n.x+'px';el.style.top=n.y+'px';}
+    });
+  };
+})();
+
+// ═══ SVG WORKFLOW ANIMATION ═══
+let svgDemoTimer=null;
+const svgNodes=['svgNode1','svgNode2','svgNode3','svgNode4','svgNode5'];
+const svgPaths=['svgPath1','svgPath2','svgPath3','svgPath4','svgPath5'];
+const svgWorkflow=document.getElementById('svgWorkflow');
+let svgStep=0;
+
+function runSvgDemo(){
+  if(svgStep>=svgNodes.length)return;
+  const node=document.getElementById(svgNodes[svgStep]);
+  if(node)node.classList.add('visible');
+  if(svgStep>0){
+    const path=document.getElementById(svgPaths[svgStep-1]);
+    if(path){svgWorkflow.classList.add('drawn');path.style.strokeDashoffset='0';}
+  }
+  svgStep++;
+  svgDemoTimer=setTimeout(runSvgDemo,800);
+}
+
+function restartSvgDemo(){
+  clearTimeout(svgDemoTimer);
+  svgStep=0;
+  svgNodes.forEach(id=>{const n=document.getElementById(id);if(n)n.classList.remove('visible');});
+  svgPaths.forEach(id=>{const p=document.getElementById(id);if(p)p.style.strokeDashoffset='500';});
+  svgWorkflow.classList.remove('drawn');
+  setTimeout(runSvgDemo,400);
+}
+
+const svgObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting&&svgStep===0){runSvgDemo();svgObs.unobserve(e.target);}
+  });
+},{threshold:0.3});
+const dc=document.getElementById('demoContainer');
+if(dc)svgObs.observe(dc);
+
+// ═══ F5: SCROLL MORPH BACKGROUND ═══
+(function(){
+  const s1=document.getElementById('morphShape1');
+  const s2=document.getElementById('morphShape2');
+  if(!s1||!s2)return;
+  const shapes=['morph-circle','morph-blob','morph-square','morph-diamond'];
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const scrollY=window.scrollY;
+        const docH=document.documentElement.scrollHeight-window.innerHeight;
+        const pct=docH>0?scrollY/docH:0;
+        const idx=Math.min(3,Math.floor(pct*4));
+        s1.className='morph-shape s1 '+shapes[idx];
+        s2.className='morph-shape s2 '+shapes[(idx+2)%4];
+        // Move shapes with scroll
+        s1.style.transform=`translateY(${scrollY*0.05}px) rotate(${pct*180}deg)`;
+        s2.style.transform=`translateY(${-scrollY*0.03}px) rotate(${-pct*120}deg)`;
+        ticking=false;
       });
-    }, { threshold: 0.3 });
-    const dc = document.getElementById('demoContainer');
-    if (dc) svgObs.observe(dc);
+      ticking=true;
+    }
+  },{passive:true});
+})();
 
-    // ═══ PRICING TOGGLE ═══
-    let isYearly = false;
-    function togglePricing() {
-      isYearly = !isYearly;
-      const track = document.getElementById('pricingToggle');
-      const lblM = document.getElementById('lblMonthly');
-      const lblY = document.getElementById('lblYearly');
-      track.classList.toggle('active', isYearly);
-      lblM.classList.toggle('text-white', !isYearly);
-      lblM.classList.toggle('text-white/40', isYearly);
-      lblM.classList.toggle('font-semibold', !isYearly);
-      lblM.classList.toggle('font-medium', isYearly);
-      lblY.classList.toggle('text-white', isYearly);
-      lblY.classList.toggle('text-white/40', !isYearly);
-      lblY.classList.toggle('font-semibold', isYearly);
-      lblY.classList.toggle('font-medium', !isYearly);
-      if (isYearly) {
-        document.getElementById('pricePro').textContent = '$16';
-        document.getElementById('execPro').textContent = '40,000';
-        document.getElementById('priceEnt').textContent = 'Custom';
-        document.getElementById('priceEntSub').textContent = '/year';
-      } else {
-        document.getElementById('pricePro').textContent = '$20';
-        document.getElementById('execPro').textContent = '20,000';
-        document.getElementById('priceEnt').textContent = 'Custom';
-        document.getElementById('priceEntSub').textContent = '';
+// ═══ F6b: FLOATING PARTICLES ═══
+(function(){
+  if(isMobile)return;
+  const canvas=document.getElementById('particleCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  const particles=[];
+  const COUNT=40;
+
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+
+  for(let i=0;i  for(let i=0;i<COUNT;i++){
+    particles.push({
+      x:Math.random()*W,
+      y:Math.random()*H,
+      r:Math.random()*2+0.5,
+      vx:(Math.random()-0.5)*0.3,
+      vy:(Math.random()-0.5)*0.3,
+      opacity:Math.random()*0.3+0.1
+    });
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,59,33,${p.opacity})`;
+      ctx.fill();
+    });
+    // Draw faint connections
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x;
+        const dy=particles[i].y-particles[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<150){
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(255,59,33,${0.05*(1-dist/150)})`;
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+        }
       }
     }
-  </script>
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+</script>
 </body>
 </html>
