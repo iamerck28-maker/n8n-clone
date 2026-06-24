@@ -1,727 +1,477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Workflow Automation Platform - n8n</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{colors:{dn:'#0e0918',dn2:'#1b1728',dn3:'#272333',ac:'#ff3b21',aco:'#ff8e5d'}}}}</script>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',sans-serif;background:#0e0918;color:#fff;overflow-x:hidden;scroll-behavior:smooth}
-    html{scroll-behavior:smooth}
-    .gb{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00)}
-    .gb:hover{filter:brightness(1.1)}
-    .cd{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
-    .cd:hover{border-color:rgba(255,255,255,.12);background:#272333}
-    .gl{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
-    .fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
-    .fu.v{opacity:1;transform:translateY(0)}
-    .tg{background:linear-gradient(135deg,#ff8e5d,#ff3b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .nb{backdrop-filter:blur(20px);background:rgba(14,9,24,.85)}
-    .sr{display:flex;gap:3rem;animation:sc 40s linear infinite}
-    @keyframes sc{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    .fb{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px}
-    .fb:hover{background:rgba(255,255,255,.06)}
-    .tc{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
-    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0e0918}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
-    .mega{display:none;position:absolute;top:100%;left:0;min-width:320px;background:#1b1728;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;z-index:100}
-    .nav-item:hover .mega{display:block}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>n8n Workflow Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{dn:'#0e0918',dn2:'#1b1728',dn3:'#272333',ac:'#ff3b21',aco:'#ff8e5d'}}}}</script>
+<script src="https://unpkg.com/drawflow@0.0.59/dist/drawflow.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0e0918;color:#fff;overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0e0918}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+.app-layout{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:220px;background:#1b1728;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.log-panel{height:0;transition:height .3s ease;border-top:1px solid rgba(255,255,255,.06);background:#1b1728;overflow:hidden}
+.log-panel.open{height:220px}
+.log-header{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.06);gap:8px}
+.log-header span{font-size:12px;font-weight:600;flex:1}
+.log-content{padding:10px 16px;font-family:monospace;font-size:11px;color:rgba(255,255,255,.5);overflow-y:auto;height:175px}
+.log-entry{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03);display:flex;gap:8px}
+.log-entry .time{color:rgba(255,255,255,.25);white-space:nowrap;min-width:65px}
+.log-entry .msg{flex:1}
+.log-entry.success .msg{color:#22c55e}
+.log-entry.error .msg{color:#ef4444}
+.log-entry.info .msg{color:#60a5fa}
+.log-entry.active .msg{color:#ff8e5d}
+.sidebar-header{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-header h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4)}
+.node-group{padding:10px 12px}
+.node-group-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.25);margin-bottom:6px}
+.drag-node{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:grab;transition:all .15s ease;margin-bottom:4px;border:1px solid transparent}
+.drag-node:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)}
+.drag-node:active{cursor:grabbing;transform:scale(.97)}
+.drag-node .icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.drag-node .label{font-size:12px;font-weight:500;color:rgba(255,255,255,.7)}
+.drag-node .sublabel{font-size:9px;color:rgba(255,255,255,.3);margin-top:1px}
+.builder-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(27,23,40,.8);backdrop-filter:blur(10px);flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-left .logo{width:28px;height:28px;border-radius:7px;background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00);display:flex;align-items:center;justify-content:center}
+.header-left .title{font-size:14px;font-weight:700}
+.header-right{display:flex;align-items:center;gap:8px}
+.hbtn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.6)}
+.hbtn:hover{background:rgba(255,255,255,.08);color:#fff}
+.hbtn.primary{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00);color:#fff;border-color:transparent}
+.hbtn.primary:hover{filter:brightness(1.1)}
+.hbtn.danger{border-color:rgba(239,68,68,.3);color:#ef4444}
+.hbtn.danger:hover{background:rgba(239,68,68,.1)}
+.hbtn.running{animation:runPulse 1.5s ease infinite}
+@keyframes runPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,33,0)}50%{box-shadow:0 0 0 6px rgba(255,59,33,.25)}}
+#drawflow{background:#0e0918;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:20px 20px;width:100%;height:100%}
+.drawflow .drawflow-node{min-width:170px;max-width:200px;background:#1b1728;border:2px solid rgba(255,255,255,.08);border-radius:12px;color:#fff;transition:border-color .2s,box-shadow .2s}
+.drawflow .drawflow-node.selected{border-color:#ff3b21;box-shadow:0 0 20px rgba(255,59,33,.15)}
+.drawflow .drawflow-node .input{width:10px;height:10px;background:#272333;border:2px solid rgba(255,255,255,.2);border-radius:50%;left:-5px;top:50%;transform:translateY(-50%)}
+.drawflow .drawflow-node .output{width:10px;height:10px;background:#272333;border:2px solid rgba(255,255,255,.2);border-radius:50%;right:-5px;top:50%;transform:translateY(-50%)}
+.drawflow .drawflow-node .input:hover,.drawflow .drawflow-node .output:hover{background:#ff3b21;border-color:#ff3b21}
+.drawflow .drawflow-node .outputs .output{border-color:rgba(255,255,255,.15)}
+.drawflow .drawflow-node .inputs .input{border-color:rgba(255,255,255,.15)}
+.drawflow .connection .main-path{stroke:rgba(255,255,255,.15);stroke-width:2;fill:none}
+.drawflow .connection .main-path:hover{stroke:#ff3b21;stroke-width:3}
+.drawflow .drawflow-delete{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,.8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;opacity:0;transition:opacity .15s}
+.drawflow .drawflow-node:hover .drawflow-delete{opacity:1}
+.wf-node-header{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
+.wf-node-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.wf-node-info{flex:1;min-width:0}
+.wf-node-title{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wf-node-type{font-size:9px;color:rgba(255,255,255,.35);margin-top:1px}
+.wf-node-body{padding:2px 12px 10px;font-size:10px;color:rgba(255,255,255,.3)}
+.wf-node-running{animation:nodePulse 1s ease infinite}
+@keyframes nodePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,33,0)}50%{box-shadow:0 0 0 8px rgba(255,59,33,.15)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#1b1728;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px;width:90%;max-width:440px;max-height:80vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.modal label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.modal input,.modal select,.modal textarea{width:100%;padding:8px 12px;background:#0e0918;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-size:13px;font-family:Inter,sans-serif;outline:none;transition:border-color .15s}
+.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:#ff3b21}
+.modal textarea{resize:vertical;min-height:60px;font-family:monospace;font-size:12px}
+.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.modal-actions button{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.modal-actions .save{background:#ff3b21;color:#fff}
+.modal-actions .save:hover{filter:brightness(1.1)}
+.modal-actions .cancel{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6)}
+.modal-actions .cancel:hover{background:rgba(255,255,255,.1)}
+.field-group{margin-bottom:12px}
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:10px;font-size:12px;font-weight:600;z-index:2000;transform:translateY(100px);opacity:0;transition:all .3s ease;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#16a34a;color:#fff}
+.toast.info{background:#2563eb;color:#fff}
+.toast.error{background:#dc2626;color:#fff}
+@media(max-width:768px){
+.sidebar{width:100%;height:auto;max-height:110px;border-right:none;border-bottom:1px solid rgba(255,255,255,.06);overflow-x:auto;overflow-y:hidden}
+.node-group{display:flex;gap:6px;padding:8px;flex-wrap:nowrap}
+.node-group-title{display:none}
+.drag-node{min-width:120px;margin-bottom:0;flex-shrink:0}
+.app-layout{flex-direction:column}
+.log-panel.open{height:160px}
+}</style>
+</head><body>
+<div class="app-layout">
+<div class="sidebar" id="sidebar">
+<div class="sidebar-header"><h3>📦 Node Palette</h3></div>
+<div class="node-group">
+<div class="node-group-title">Triggers</div>
+<div class="drag-node" draggable="true" data-node-type="trigger"><div class="icon" style="background:rgba(34,197,94,.15)">🎯</div><div><div class="label">Trigger</div><div class="sublabel">Webhook</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="trigger"><div class="icon" style="background:rgba(34,197,94,.15)">⏰</div><div><div class="label">Schedule</div><div class="sublabel">Cron trigger</div></div></div>
+</div>
+<div class="node-group">
+<div class="node-group-title">Actions</div>
+<div class="drag-node" draggable="true" data-node-type="http"><div class="icon" style="background:rgba(96,165,250,.15)">🌐</div><div><div class="label">HTTP Request</div><div class="sublabel">GET / POST</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="email"><div class="icon" style="background:rgba(168,85,247,.15)">📧</div><div><div class="label">Email</div><div class="sublabel">Send email</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="delay"><div class="icon" style="background:rgba(234,179,8,.15)">⏱️</div><div><div class="label">Delay</div><div class="sublabel">Wait N seconds</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="if"><div class="icon" style="background:rgba(249,115,22,.15)">🔀</div><div><div class="label">IF / Switch</div><div class="sublabel">Route by condition</div></div></div>
+</div>
+<div class="node-group">
+<div class="node-group-title">Output</div>
+<div class="drag-node" draggable="true" data-node-type="output"><div class="icon" style="background:rgba(239,68,68,.15)">📤</div><div><div class="label">Output</div><div class="sublabel">Response / Log</div></div></div>
+</div>
+</div>
+<div class="main-area">
+<div class="builder-header">
+<div class="header-left">
+<div class="logo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></div>
+<div class="title">n8n Workflow Builder</div>
+</div>
+<div class="header-right">
+<button class="hbtn" onclick="clearWorkflow()">Clear</button>
+<button class="hbtn" onclick="exportJSON()">Export JSON</button>
+<button class="hbtn" onclick="saveWorkflow()">Save</button>
+<button class="hbtn" onclick="loadWorkflow()">Load</button>
+<button class="hbtn primary" id="btnRun" onclick="runWorkflow()">▶ Run</button>
+<button class="hbtn" onclick="toggleLog()">Log</button>
+</div>
+</div>
+<div class="canvas-wrapper"><div id="drawflow"></div></div>
+<div class="log-panel" id="logPanel">
+<div class="log-header"><span>📋 Execution Log</span><button class="hbtn" onclick="clearLog()" style="padding:3px 8px;font-size:10px;">Clear</button></div>
+<div class="log-content" id="logContent"></div>
+</div>
+</div>
+</div>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+<div class="modal" id="modalContent"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// ===== CONFIG =====
+const NODES = {
+  trigger: {icon:'🎯',color:'rgba(34,197,94,.15)',title:'Trigger',type:'Webhook',inputs:0,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(34,197,94,.15)">🎯</div><div class="wf-node-info"><div class="wf-node-title">Trigger</div><div class="wf-node-type">Webhook</div></div></div><div class="wf-node-body">Configure trigger settings</div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'url',label:'Webhook URL',type:'text',default:'/webhook/hook-1'},{name:'method',label:'Method',type:'select',options:['GET','POST','PUT'],default:'POST'}]},
+  http: {icon:'🌐',color:'rgba(96,165,250,.15)',title:'HTTP Request',type:'GET / POST',inputs:1,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(96,165,250,.15)">🌐</div><div class="wf-node-info"><div class="wf-node-title">HTTP Request</div><div class="wf-node-type">GET / POST</div></div></div><div class="wf-node-body">Configure API call</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'url',label:'URL',type:'text',default:'https://api.example.com'},{name:'method',label:'Method',type:'select',options:['GET','POST','PUT','DELETE'],default:'GET'},{name:'headers',label:'Headers (JSON)',type:'textarea',default:'{"Content-Type":"application/json"}'}]},
+  email: {icon:'📧',color:'rgba(168,85,247,.15)',title:'Email',type:'Send email',inputs:1,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(168,85,247,.15)">📧</div><div class="wf-node-info"><div class="wf-node-title">Email</div><div class="wf-node-type">Send email</div></div></div><div class="wf-node-body">Configure email</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'to',label:'To',type:'text',default:'user@example.com'},{name:'subject',label:'Subject',type:'text',default:'Workflow Notification'},{name:'body',label:'Body',type:'textarea',default:'Hello from n8n workflow!'}]},
+  delay: {icon:'⏱️',color:'rgba(234,179,8,.15)',title:'Delay',type:'Wait N seconds',inputs:1,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(234,179,8,.15)">⏱️</div><div class="wf-node-info"><div class="wf-node-title">Delay</div><div class="wf-node-type">Wait N seconds</div></div></div><div class="wf-node-body">Configure delay</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'seconds',label:'Delay (seconds)',type:'text',default:'5'},{name:'unit',label:'Unit',type:'select',options:['seconds','minutes','hours'],default:'seconds'}]},
+  if: {icon:'🔀',color:'rgba(249,115,22,.15)',title:'IF / Switch',type:'Route by condition',inputs:1,outputs:2,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(249,115,22,.15)">🔀</div><div class="wf-node-info"><div class="wf-node-title">IF / Switch</div><div class="wf-node-type">Route by condition</div></div></div><div class="wf-node-body">Configure conditions</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div><div class="output"></div></div>',
+    props:[{name:'condition',label:'Condition',type:'text',default:"data.status === 'success'"},{name:'trueLabel',label:'True Branch',type:'text',default:'Yes'},{name:'falseLabel',label:'False Branch',type:'text',default:'No'}]},
+  output: {icon:'📤',color:'rgba(239,68,68,.15)',title:'Output',type:'Response / Log',inputs:1,outputs:0,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(239,68,68,.15)">📤</div><div class="wf-node-info"><div class="wf-node-title">Output</div><div class="wf-node-type">Response / Log</div></div></div><div class="wf-node-body">Configure output</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'format',label:'Output Format',type:'select',options:['JSON','Text','File'],default:'JSON'},{name:'destination',label:'Destination',type:'text',default:'/api/response'}]}
+};
 
-    /* Animated Demo Styles */
-    .demo-canvas{position:relative;width:100%;max-width:800px;margin:0 auto;aspect-ratio:16/9}
-    .demo-node{position:absolute;background:#1b1728;border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:10px;opacity:0;transform:scale(.7);transition:all .5s cubic-bezier(.16,1,.3,1);z-index:2}
-    .demo-node.active{opacity:1;transform:scale(1)}
-    .demo-node .node-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-    .demo-node .node-label{font-size:13px;font-weight:600;white-space:nowrap}
-    .demo-node .node-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
-    .demo-line{position:absolute;z-index:1;opacity:0;transition:opacity .6s ease .3s}
-    .demo-line.active{opacity:1}
-    .demo-line svg line{stroke-dasharray:8 4;animation:dashFlow 1s linear infinite}
-    .demo-line svg line.glow{stroke-dasharray:none;stroke-width:6;filter:blur(4px);opacity:.3}
-    @keyframes dashFlow{to{stroke-dashoffset:-12}}
-    .demo-pulse{position:absolute;width:10px;height:10px;border-radius:50%;background:#ff3b21;opacity:0;z-index:3;pointer-events:none}
-    @keyframes pulseMove{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--tx),var(--ty))}}
-    .demo-restart{margin-top:30px;display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:13px;font-weight:600;cursor:pointer;transition:all .25s ease}
-    .demo-restart:hover{background:rgba(255,255,255,.1);color:#fff}
+const MOCK_DATA = {
+  trigger:'Webhook received at /webhook/hook-1 - Payload: {event: "user.signup"}',
+  http:'GET https://api.example.com -> 200 OK: {users: [{id: 1, name: "John"}]}',
+  email:'Email sent to user@example.com - Subject: "Workflow Notification"',
+  delay:'Waiting 5 seconds...',
+  if:'Condition evaluated: data.status === "success" -> true',
+  output:'Output sent: {status: "ok", processed: true}'
+};
 
-    /* Pricing Toggle */
-    .toggle-track{width:52px;height:28px;background:rgba(255,255,255,.1);border-radius:14px;position:relative;cursor:pointer;transition:background .3s ease}
-    .toggle-track.active{background:#ff3b21}
-    .toggle-thumb{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 6px rgba(0,0,0,.3)}
-    .toggle-track.active .toggle-thumb{transform:translateX(24px)}
+// ===== INIT DRAWFLOW =====
+let editor;
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('drawflow');
+  editor = new Drawflow(container);
+  editor.reroute = true;
+  editor.reroute_fix_curvature = true;
+  editor.force_first_input = false;
+  editor.start();
+  editor.zoom_refresh();
 
-    /* Testimonial Carousel */
-    .testimonial-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:10px 0}
-    .testimonial-track::-webkit-scrollbar{display:none}
-    .testimonial-card{min-width:320px;max-width:380px;flex-shrink:0;scroll-snap-align:start;background:#1b1728;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px;transition:all .35s ease}
-    .testimonial-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-4px)}
-    .testimonial-card .stars{color:#ff3b21;font-size:14px;letter-spacing:2px;margin-bottom:14px}
-    .testimonial-card .quote{font-size:14px;line-height:1.7;color:rgba(255,255,255,.55);margin-bottom:18px}
-    .testimonial-card .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff8e5d,#ff3b21);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
-    .testimonial-card .author-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.9)}
-    .testimonial-card .author-biz{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+  // Drag & Drop
+  document.querySelectorAll('.drag-node').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('nodeType', el.dataset.nodeType);
+      e.dataTransfer.effectAllowed = 'move';
+    });
+  });
+  container.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+  container.addEventListener('drop', e => {
+    e.preventDefault();
+    const ntype = e.dataTransfer.getData('nodeType');
+    if (!ntype || !NODES[ntype]) return;
+    const n = NODES[ntype];
+    const pos = editor.canvas_x !== undefined ? {x: editor.canvas_x, y: editor.canvas_y} : {x: e.offsetX, y: e.offsetY};
+    editor.addNode(ntype, n.inputs, n.outputs, pos.x, pos.y, ntype, {}, n.html);
+  });
 
-    /* Pricing feature list */
-    .price-check{color:#22c55e;font-weight:700;margin-right:8px}
-    .price-cross{color:rgba(255,255,255,.15);margin-right:8px}
-
-    /* Mobile overrides */
-    @media (max-width:768px){
-      .demo-canvas{min-height:420px!important}
-      .demo-node{padding:10px 12px!important}
-      .demo-node .node-icon{width:30px;height:30px;font-size:13px}
-      .demo-node .node-label{font-size:11px}
-      .demo-node .node-sub{font-size:9px}
-      .testimonial-card{min-width:280px;max-width:100%}
+  // Node events
+  editor.on('nodeCreated', id => {
+    const node = editor.getNodeFromId(id);
+    if (node && node.data && !node.data.type) {
+      node.data.type = Object.keys(editor.drawflow.drawflow.Home.data).length > 0 ? ntype : ntype;
     }
-    @media (max-width:480px){
-      .demo-canvas{min-height:520px!important}
-      .demo-node{position:relative!important;left:auto!important;top:auto!important;width:100%;margin-bottom:8px}
-      .demo-line{display:none}
-      .testimonial-card{min-width:100%}
-    }
-  </style>
-</head>
-<body>
-  <!-- TOP BANNER -->
-  <div class="gb text-center py-2.5 px-4">
-    <p class="text-white text-[13px] font-medium">🎉 Join our team and CEO Jan at n8n Fest in Berlin on July 16 <a href="#" class="underline ml-1">Reserve your spot →</a></p>
-  </div>
+  });
 
-  <!-- NAV -->
-  <header class="sticky top-0 z-50 nb border-b border-white/5">
-    <nav class="max-w-[1300px] mx-auto px-6 flex items-center justify-between h-16">
-      <div class="flex items-center gap-10">
-        <a href="#" class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg gb flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
-          </div>
-          <span class="font-bold text-[16px]">n8n</span>
-        </a>
-        <div class="hidden lg:flex items-center gap-1">
-          <div class="nav-item relative px-3 py-2">
-            <button class="text-[13px] text-white/60 hover:text-white transition flex items-center gap-1">Product <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
-            <div class="mega">
-              <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Product overview</div><div class="text-xs text-white/40">Automate business processes without limits</div></a>
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Integrations</div><div class="text-xs text-white/40">Seamlessly move and transform data</div></a>
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Templates</div><div class="text-xs text-white/40">Explore +10k workflow templates</div></a>
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Enterprise</div><div class="text-xs text-white/40">Security and governance at scale</div></a>
-              </div>
-            </div>
-          </div>
-          <div class="nav-item relative px-3 py-2">
-            <button class="text-[13px] text-white/60 hover:text-white transition flex items-center gap-1">Use cases <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
-            <div class="mega" style="min-width:280px">
-              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Building AI agents</a>
-              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">IT operations</a>
-              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Security operations</a>
-              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Lead automation</a>
-              <a href="#" class="block p-2.5 rounded-lg hover:bg-white/5 transition text-sm text-white/70 hover:text-white">Supercharge your CRM</a>
-            </div>
-          </div>
-          <a href="#" class="px-3 py-2 text-[13px] text-white/60 hover:text-white transition">Case studies</a>
-          <a href="#" class="px-3 py-2 text-[13px] text-white/60 hover:text-white transition">Docs</a>
-          <a href="#" class="px-3 py-2 text-[13px] text-white/60 hover:text-white transition">Pricing</a>
-        </div>
-      </div>
-      <div class="flex items-center gap-4">
-        <a href="#" class="hidden md:inline text-[13px] text-white/60 hover:text-white transition">Sign in</a>
-        <a href="#" class="gb px-5 py-2.5 rounded-lg text-[13px] font-semibold">Get started free</a>
-      </div>
-    </nav>
-  </header>
+  editor.on('nodeDoubleClick', id => {
+    openNodeEditor(id);
+  });
 
-  <!-- HERO -->
-  <section class="relative pt-24 pb-20 px-6 overflow-hidden">
-    <div class="gl w-[700px] h-[700px] bg-[#ff3b21]/15 top-[-250px] right-[-250px]"></div>
-    <div class="gl w-[500px] h-[500px] bg-[#674545]/20 bottom-[-150px] left-[-150px]"></div>
-    <div class="max-w-[900px] mx-auto text-center relative z-10">
-      <div class="fu">
-        <h1 class="text-4xl md:text-6xl lg:text-[76px] font-black leading-[1.05] tracking-tight mb-6">
-          AI agents and workflows<br>you can <span class="tg">see and control</span>
-        </h1>
-      </div>
-      <div class="fu" style="transition-delay:.1s">
-        <p class="text-white/50 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-          Build visually, go deep with code, connect to anything. Every step of your agents' reasoning, traceable on the canvas.
-        </p>
-      </div>
-      <div class="fu flex flex-col sm:flex-row gap-4 justify-center" style="transition-delay:.2s">
-        <a href="#" class="gb px-8 py-4 rounded-xl text-[15px] font-bold">Get started for free</a>
-        <a href="#" class="px-8 py-4 rounded-xl text-[15px] font-semibold border border-white/15 hover:bg-white/5 transition">Talk to sales</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SOCIAL PROOF TEXT -->
-  <section class="py-10 px-6">
-    <div class="max-w-[900px] mx-auto text-center">
-      <p class="text-white/30 text-sm">The world's most popular workflow automation platform for technical teams</p>
-      <div class="flex flex-wrap justify-center gap-3 mt-6">
-        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">On-board new employees</span>
-        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">Enrich security incident tickets</span>
-        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">Convert natural language into API calls</span>
-        <span class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs text-white/50">Generate customer insights from reviews</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- VIDEO SECTION -->
-  <section class="py-16 px-6">
-    <div class="max-w-[1000px] mx-auto">
-      <div class="fu cd rounded-2xl overflow-hidden relative" style="aspect-ratio:16/9">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#1b1728] to-[#0e0918] flex items-center justify-center">
-          <div class="text-center">
-            <div class="w-16 h-16 rounded-full gb flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-110 transition">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </div>
-            <p class="text-white/40 text-sm">Watch this video to hear our pitch</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ANIMATED WORKFLOW DEMO -->
-  <section class="py-20 px-6" id="demo">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu text-center mb-12">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4">Watch your workflows<br><span class="tg">come to life</span></h2>
-        <p class="text-white/40 text-base max-w-lg mx-auto">See how a trigger flows through actions and produces output — in real time.</p>
-      </div>
-      <div class="fu cd rounded-2xl p-6 md:p-10 relative overflow-hidden" id="demoContainer">
-        <div class="gl w-[300px] h-[300px] bg-[#ff3b21]/10 top-[-100px] right-[-100px]"></div>
-        <div class="demo-canvas relative z-10" id="demoCanvas" style="min-height:280px">
-          <!-- Node 1: Trigger -->
-          <div class="demo-node" id="node1" style="left:5%;top:35%">
-            <div class="node-icon" style="background:rgba(255,59,33,.15)">⚡</div>
-            <div><div class="node-label">Trigger</div><div class="node-sub">Webhook received</div></div>
-          </div>
-          <!-- Node 2: Classify -->
-          <div class="demo-node" id="node2" style="left:33%;top:15%">
-            <div class="node-icon" style="background:rgba(255,142,93,.15)">🤖</div>
-            <div><div class="node-label">OpenAI</div><div class="node-sub">Classify intent</div></div>
-          </div>
-          <!-- Node 3: Route -->
-          <div class="demo-node" id="node3" style="left:63%;top:15%">
-            <div class="node-icon" style="background:rgba(96,165,250,.15)">🔀</div>
-            <div><div class="node-label">IF / Switch</div><div class="node-sub">Route by intent</div></div>
-          </div>
-          <!-- Node 4: Action -->
-          <div class="demo-node" id="node4" style="left:63%;top:58%">
-            <div class="node-icon" style="background:rgba(34,197,94,.15)">💬</div>
-            <div><div class="node-label">Slack</div><div class="node-sub">Notify #support</div></div>
-          </div>
-          <!-- Node 5: Output -->
-          <div class="demo-node" id="node5" style="left:33%;top:58%">
-            <div class="node-icon" style="background:rgba(168,85,247,.15)">📧</div>
-            <div><div class="node-label">Gmail</div><div class="node-sub">Reply to customer</div></div>
-          </div>
-
-          <!-- Connection Lines (SVG) -->
-          <svg class="demo-line" id="line1" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="20%" y1="45%" x2="38%" y2="30%" stroke="#ff3b21" stroke-width="2"/>
-            <line x1="20%" y1="45%" x2="38%" y2="30%" stroke="#ff3b21" stroke-width="2"/>
-          </svg>
-          <svg class="demo-line" id="line2" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="52%" y1="28%" x2="67%" y2="28%" stroke="#ff8e5d" stroke-width="2"/>
-            <line x1="52%" y1="28%" x2="67%" y2="28%" stroke="#ff8e5d" stroke-width="2"/>
-          </svg>
-          <svg class="demo-line" id="line3" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="78%" y1="38%" x2="78%" y2="58%" stroke="#60a5fa" stroke-width="2"/>
-            <line x1="78%" y1="38%" x2="78%" y2="58%" stroke="#60a5fa" stroke-width="2"/>
-          </svg>
-          <svg class="demo-line" id="line4" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="63%" y1="70%" x2="48%" y2="70%" stroke="#22c55e" stroke-width="2"/>
-            <line x1="63%" y1="70%" x2="48%" y2="70%" stroke="#22c55e" stroke-width="2"/>
-          </svg>
-        </div>
-        <div class="text-center">
-          <button class="demo-restart" id="demoRestart" onclick="restartDemo()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v9h-9"/></svg>
-            Replay animation
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TRUST BADGES -->
-  <section class="py-16 px-6 border-y border-white/5">
-    <div class="max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10 text-center">
-      <div class="fu">
-        <div class="text-3xl font-bold mb-2">Top 50 GitHub.</div>
-        <p class="text-white/40 text-sm">Our 193.7k stars place us among the most popular projects.</p>
-      </div>
-      <div class="fu" style="transition-delay:.1s">
-        <div class="text-3xl font-bold mb-2">4.9/5 stars on G2.</div>
-        <p class="text-white/40 text-sm">"I can move fast and never feel boxed in."</p>
-      </div>
-      <div class="fu" style="transition-delay:.2s">
-        <div class="text-3xl font-bold mb-2">200k+ community members.</div>
-        <p class="text-white/40 text-sm">This wouldn't be possible without you.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- INTEGRATIONS -->
-  <section class="py-20 px-6">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu text-center mb-12">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4">Plug AI into your own data &<br><span class="tg">over 500 integrations</span></h2>
-        <p class="text-white/40 text-base max-w-lg mx-auto">Use pre-built nodes for common apps. Custom API connections for everything else.</p>
-      </div>
-      <div class="fu overflow-hidden mb-8">
-        <div class="sr">
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📊 Google Sheets</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🤖 OpenAI</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💬 Slack</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📧 Gmail</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🗄️ PostgreSQL</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📁 Google Drive</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📱 Telegram</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🎵 Discord</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📝 Notion</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💼 HubSpot</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🐦 Twitter</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📊 MySQL</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📊 Google Sheets</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🤖 OpenAI</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💬 Slack</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📧 Gmail</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🗄️ PostgreSQL</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📁 Google Drive</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📱 Telegram</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">🎵 Discord</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">📝 Notion</span>
-          <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💼 HubSpot</span>
-        </div>
-      </div>
-      <div class="text-center">
-        <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Browse all integrations →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURE: Build AI agents -->
-  <section class="py-20 px-6">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
-        <div class="gl w-[400px] h-[400px] bg-[#ff3b21]/10 top-[-150px] right-[-150px]"></div>
-        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 class="text-2xl md:text-4xl font-bold mb-4">Build AI agents<br>you can actually <span class="tg">follow</span></h2>
-            <p class="text-white/40 text-sm leading-relaxed mb-6">Connect any model. Inspect every decision. Keep humans in the loop.</p>
-            <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Learn more →</a>
-          </div>
-          <div class="bg-[#0e0918] rounded-xl p-6 border border-white/5 font-mono text-[12px] space-y-2.5">
-            <div class="flex items-center gap-2"><span class="text-[#ff3b21]">●</span><span class="text-white/50">Trigger: Webhook received</span></div>
-            <div class="flex items-center gap-2 ml-4"><span class="text-white/15">│</span></div>
-            <div class="flex items-center gap-2 ml-4"><span class="text-[#ff8e5d]">●</span><span class="text-white/50">OpenAI: Classify intent</span></div>
-            <div class="flex items-center gap-2 ml-8"><span class="text-white/15">│</span></div>
-            <div class="flex items-center gap-2 ml-8"><span class="text-blue-400">●</span><span class="text-white/50">IF: intent === "support"</span></div>
-            <div class="flex items-center gap-2 ml-12"><span class="text-white/15">│</span></div>
-            <div class="flex items-center gap-2 ml-12"><span class="text-green-400">●</span><span class="text-white/50">Slack: Send to #support</span></div>
-            <div class="flex items-center gap-2 ml-12"><span class="text-white/15">│</span></div>
-            <div class="flex items-center gap-2 ml-12"><span class="text-purple-400">●</span><span class="text-white/50">Gmail: Reply to customer</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURE: Complex AI -->
-  <section class="py-20 px-6">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
-        <div class="gl w-[400px] h-[400px] bg-[#674545]/20 bottom-[-150px] left-[-150px]"></div>
-        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div class="order-2 md:order-1">
-            <div class="bg-[#0e0918] rounded-xl p-6 border border-white/5 space-y-4">
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🤖</span>
-                <span class="text-sm text-white/60 flex-1">Update Detected</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Running</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🧪</span>
-                <span class="text-sm text-white/60 flex-1">Running Custom Unit Testing</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">Active</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🔄</span>
-                <span class="text-sm text-white/60 flex-1">Update Rolled Back Automatically</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Done</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🔔</span>
-                <span class="text-sm text-white/60 flex-1">IT Team Notified of New Ticket</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Sent</span>
-              </div>
-            </div>
-          </div>
-          <div class="order-1 md:order-2">
-            <h2 class="text-2xl md:text-4xl font-bold mb-4">Build complex AI<br>without getting <span class="tg">boxed in</span></h2>
-            <p class="text-white/40 text-sm leading-relaxed mb-6">Handle multi-agent setups and RAG systems. Use multiple cloud or offline AI models. Integrate with legacy systems while staying set up for the future.</p>
-            <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Explore AI →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURE: Runs where you decide -->
-  <section class="py-20 px-6">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
-        <div class="gl w-[400px] h-[400px] bg-[#a85c5c]/15 top-[-150px] left-[-150px]"></div>
-        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 class="text-2xl md:text-4xl font-bold mb-4">Runs where <span class="tg">you decide</span></h2>
-            <p class="text-white/40 text-sm leading-relaxed mb-6">Protect your data by deploying on-prem. Access the entire source code on GitHub. Hosted version also available.</p>
-            <div class="flex flex-wrap gap-3">
-              <a href="#" class="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white/70 hover:text-white transition">Deploy with Docker</a>
-              <a href="#" class="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white/70 hover:text-white transition">Source code on GitHub</a>
-            </div>
-          </div>
-          <div class="bg-[#0e0918] rounded-xl p-6 border border-white/5">
-            <div class="grid grid-cols-3 gap-4 text-center">
-              <div class="p-4 rounded-lg bg-white/5"><div class="text-2xl mb-2">🐳</div><div class="text-xs text-white/50">Docker</div></div>
-              <div class="p-4 rounded-lg bg-white/5"><div class="text-2xl mb-2">☁️</div><div class="text-xs text-white/50">Cloud</div></div>
-              <div class="p-4 rounded-lg bg-white/5"><div class="text-2xl mb-2">🖥️</div><div class="text-xs text-white/50">Self-host</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURE: Human-in-the-loop -->
-  <section class="py-20 px-6">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
-        <div class="gl w-[400px] h-[400px] bg-[#262149]/30 bottom-[-150px] right-[-150px]"></div>
-        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div class="order-2 md:order-1">
-            <div class="bg-[#0e0918] rounded-xl p-5 border border-white/5 space-y-3">
-              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-blue-400">
-                <p class="text-xs text-white/50 italic">"Who held meetings with SpaceX last week?"</p>
-              </div>
-              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-green-400">
-                <p class="text-xs text-white/50">On Wednesday, Joe updated the status to "won" in Salesforce after a Zoom call.</p>
-              </div>
-              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-purple-400">
-                <p class="text-xs text-white/50">On Thursday, Sue provided on-site setup and closed the ServiceNow ticket.</p>
-              </div>
-            </div>
-          </div>
-          <div class="order-1 md:order-2">
-            <h2 class="text-2xl md:text-4xl font-bold mb-4">Let people and logic<br>guide <span class="tg">AI decisions</span></h2>
-            <p class="text-white/40 text-sm leading-relaxed mb-6">Enforce structured inputs and outputs to control the data flow to and from AI steps. Combine human-in-the-loop approvals with rule-based automation.</p>
-            <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Learn more →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="py-20 px-6" id="testimonials">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu text-center mb-12">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4">Trusted by businesses<br><span class="tg">across Majalengka</span></h2>
-        <p class="text-white/40 text-base max-w-lg mx-auto">Hear from local UMKM owners who automated their workflows.</p>
-      </div>
-      <div class="fu">
-        <div class="testimonial-track">
-          <!-- Card 1 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"Sejak pakai n8n, pesanan online di Tokopedia langsung otomatis masuk Google Sheets dan notifikasi ke WhatsApp. Gak perlu cek manual lagi — hidup jadi lebih gampang!"</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">RS</div>
-              <div>
-                <div class="author-name">Rina Susanti</div>
-                <div class="author-biz">Toko Sembako Online — Majalengka Kota</div>
-              </div>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"Workflow automasi bikin sistem reminder pelanggan jadi jalan sendiri. Bayaran overdue? Langsung WA otomatis. Customer service saya tinggal fokus yang urgent aja."</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">DK</div>
-              <div>
-                <div class="author-name">Dedi Kusnadi</div>
-                <div class="author-biz">Bengkel Motor Kusna — Cipicung</div>
-              </div>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"Butuh 2 bulan pindah dari manual ke fully automated. Sekarang data stok, order dari Shopee, sama invoice semuanya nyatu. Efficiency naik 3x lipat, beneran."</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">AW</div>
-              <div>
-                <div class="author-name">Ayu Wulandari</div>
-                <div class="author-biz">Kue Majalengka — Jatitujuh</div>
-              </div>
-            </div>
-          </div>
-          <!-- Card 4 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"As a small warung owner, I never thought I could afford automation. But n8n's free tier gave me everything. Sekarang supply ordering fully automated — tinggal approve di HP."</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">HS</div>
-              <div>
-                <div class="author-name">Hendra Setiawan</div>
-                <div class="author-biz">Warung Hendra — Ciamis (Majalengka border)</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING CALCULATOR -->
-  <section class="py-20 px-6" id="pricing">
-    <div class="max-w-[1100px] mx-auto">
-      <div class="fu text-center mb-8">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4">Simple, transparent<br><span class="tg">pricing</span></h2>
-        <p class="text-white/40 text-base max-w-lg mx-auto mb-8">Start free. Scale when you're ready.</p>
-        <!-- Monthly / Yearly Toggle -->
-        <div class="flex items-center justify-center gap-4">
-          <span id="lblMonthly" class="text-sm font-semibold text-white">Monthly</span>
-          <div class="toggle-track" id="pricingToggle" onclick="togglePricing()">
-            <div class="toggle-thumb"></div>
-          </div>
-          <span id="lblYearly" class="text-sm font-medium text-white/40">Yearly <span class="text-green-400 text-xs font-bold">Save 20%</span></span>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <!-- Free -->
-        <div class="fu cd rounded-2xl p-8 relative">
-          <div class="mb-6">
-            <div class="text-sm font-semibold text-white/50 mb-1">Free</div>
-            <div class="flex items-end gap-1">
-              <span class="text-4xl font-bold" id="priceFree">$0</span>
-              <span class="text-white/30 text-sm mb-1">/month</span>
-            </div>
-          </div>
-          <p class="text-white/40 text-xs mb-6">Perfect for trying out workflow automation.</p>
-          <a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Get started free</a>
-          <ul class="space-y-3">
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 2,000 executions / month</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 5 active workflows</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Community support</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> AI agents</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Priority support</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Custom domains</li>
-          </ul>
-        </div>
-        <!-- Pro -->
-        <div class="fu cd rounded-2xl p-8 relative border-[#ff3b21]/30" style="border-color:rgba(255,59,33,.3)">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ff3b21] text-[10px] font-bold px-3 py-1 rounded-full">MOST POPULAR</div>
-          <div class="mb-6">
-            <div class="text-sm font-semibold text-white/50 mb-1">Pro</div>
-            <div class="flex items-end gap-1">
-              <span class="text-4xl font-bold" id="pricePro">$20</span>
-              <span class="text-white/30 text-sm mb-1">/month</span>
-            </div>
-          </div>
-          <p class="text-white/40 text-xs mb-6">For growing teams and serious automation.</p>
-          <a href="#" class="block text-center w-full py-3 rounded-xl gb text-sm font-bold mb-6">Start 14-day trial</a>
-          <ul class="space-y-3">
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> <span id="execPro">20,000</span> executions / month</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> AI agents & RAG</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Priority email support</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Custom domains</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Dedicated account manager</li>
-          </ul>
-        </div>
-        <!-- Enterprise -->
-        <div class="fu cd rounded-2xl p-8 relative">
-          <div class="mb-6">
-            <div class="text-sm font-semibold text-white/50 mb-1">Enterprise</div>
-            <div class="flex items-end gap-1">
-              <span class="text-4xl font-bold" id="priceEnt">Custom</span>
-              <span class="text-white/30 text-sm mb-1" id="priceEntSub"></span>
-            </div>
-          </div>
-          <p class="text-white/40 text-xs mb-6">For organizations that need full control.</p>
-          <a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Talk to sales</a>
-          <ul class="space-y-3">
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited executions</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Advanced AI & RAG</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> SSO / SAML / LDAP</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Dedicated account manager</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> On-premise deployment</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="py-24 px-6">
-    <div class="max-w-[900px] mx-auto text-center fu">
-      <h2 class="text-3xl md:text-5xl font-bold mb-4">Simple enough to see.<br>Powerful enough to <span class="tg">ship</span>.</h2>
-      <p class="text-white/40 text-lg max-w-xl mx-auto mb-8">Join the teams building AI automation they can actually explain.</p>
-      <a href="#" class="inline-flex gb px-8 py-4 rounded-xl text-[15px] font-bold">Start building</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-white/5 py-12 px-6">
-    <div class="max-w-[1300px] mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
-      <div class="col-span-2 md:col-span-1">
-        <div class="flex items-center gap-2 mb-4">
-          <div class="w-7 h-7 rounded-lg gb flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></div>
-          <span class="font-bold text-sm">n8n</span>
-        </div>
-        <p class="text-white/30 text-xs leading-relaxed">AI workflow automation for technical teams.</p>
-      </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Product</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Features</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Integrations</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Templates</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Pricing</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Release notes</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Use cases</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">AI agents</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">IT operations</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security ops</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Lead automation</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">CRM</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Resources</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Documentation</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Community</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Blog</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Enterprise</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Company</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">About</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Careers</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Contact</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="max-w-[1300px] mx-auto border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-white/20 text-xs">© 2026 LM Studio. Inspired by n8n.</p>
-      <div class="flex items-center gap-5">
-        <a href="#" class="text-white/30 hover:text-white text-xs transition">Instagram</a>
-        <a href="#" class="text-white/30 hover:text-white text-xs transition">GitHub</a>
-        <a href="#" class="text-white/30 hover:text-white text-xs transition">Discord</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // ── Intersection Observer (enhanced) ──
-    const obs = new IntersectionObserver(e => {
-      e.forEach(x => {
-        if (x.isIntersecting) {
-          x.target.classList.add('v');
-          obs.unobserve(x.target); // only animate once
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.fu').forEach(el => obs.observe(el));
-
-    // ── Animated Workflow Demo ──
-    const demoSteps = [
-      { nodes: ['node1'], lines: [] },
-      { nodes: ['node1', 'node2'], lines: ['line1'] },
-      { nodes: ['node1', 'node2', 'node3'], lines: ['line1', 'line2'] },
-      { nodes: ['node1', 'node2', 'node3', 'node4'], lines: ['line1', 'line2', 'line3'] },
-      { nodes: ['node1', 'node2', 'node3', 'node4', 'node5'], lines: ['line1', 'line2', 'line3', 'line4'] },
-    ];
-    let demoTimer = null;
-    let demoStep = 0;
-
-    function runDemo() {
-      if (demoStep >= demoSteps.length) return;
-      const step = demoSteps[demoStep];
-      step.nodes.forEach(id => document.getElementById(id)?.classList.add('active'));
-      step.lines.forEach(id => document.getElementById(id)?.classList.add('active'));
-      demoStep++;
-      demoTimer = setTimeout(runDemo, 700);
-    }
-
-    function restartDemo() {
-      clearTimeout(demoTimer);
-      demoStep = 0;
-      document.querySelectorAll('.demo-node, .demo-line').forEach(el => el.classList.remove('active'));
-      setTimeout(runDemo, 400);
-    }
-
-    // Auto-start demo when visible
-    const demoObs = new IntersectionObserver(e => {
-      e.forEach(x => {
-        if (x.isIntersecting && demoStep === 0) {
-          runDemo();
-          demoObs.unobserve(x.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    const dc = document.getElementById('demoContainer');
-    if (dc) demoObs.observe(dc);
-
-    // ── Pricing Toggle ──
-    let isYearly = false;
-    function togglePricing() {
-      isYearly = !isYearly;
-      const track = document.getElementById('pricingToggle');
-      const lblM = document.getElementById('lblMonthly');
-      const lblY = document.getElementById('lblYearly');
-      track.classList.toggle('active', isYearly);
-      lblM.classList.toggle('text-white', !isYearly);
-      lblM.classList.toggle('text-white/40', isYearly);
-      lblM.classList.toggle('font-semibold', !isYearly);
-      lblM.classList.toggle('font-medium', isYearly);
-      lblY.classList.toggle('text-white', isYearly);
-      lblY.classList.toggle('text-white/40', !isYearly);
-      lblY.classList.toggle('font-semibold', isYearly);
-      lblY.classList.toggle('font-medium', !isYearly);
-
-      if (isYearly) {
-        document.getElementById('pricePro').textContent = '$16';
-        document.getElementById('execPro').textContent = '40,000';
-        document.getElementById('priceEnt').textContent = 'Custom';
-        document.getElementById('priceEntSub').textContent = '/year';
-      } else {
-        document.getElementById('pricePro').textContent = '$20';
-        document.getElementById('execPro').textContent = '20,000';
-        document.getElementById('priceEnt').textContent = 'Custom';
-        document.getElementById('priceEntSub').textContent = '';
+  // Keyboard delete
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      const selected = document.querySelectorAll('.drawflow .drawflow-node.selected');
+      if (selected.length > 0) {
+        selected.forEach(el => {
+          const id = el.id.replace('node-', '');
+          editor.removeNodeId('node-' + id);
+        });
       }
     }
-  </script>
+  });
+
+  // Load from localStorage
+  const saved = localStorage.getItem('n8n_workflow');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      editor.import(data);
+      showToast('Workflow loaded from auto-save', 'info');
+    } catch(e) {}
+  }
+});
+
+// ===== NODE EDITOR =====
+function openNodeEditor(nodeId) {
+  const node = editor.getNodeFromId(nodeId);
+  if (!node) return;
+  const ntype = node.name;
+  const n = NODES[ntype];
+  if (!n) return;
+
+  let fieldsHtml = '';
+  (n.props || []).forEach(f => {
+    const val = node.data[f.name] || f.default || '';
+    if (f.type === 'select') {
+      const opts = f.options.map(o => '<option value="' + o + '"' + (o === val ? ' selected' : '') + '>' + o + '</option>').join('');
+      fieldsHtml += '<div class="field-group"><label>' + f.label + '</label><select data-field="' + f.name + '">' + opts + '</select></div>';
+    } else if (f.type === 'textarea') {
+      fieldsHtml += '<div class="field-group"><label>' + f.label + '</label><textarea data-field="' + f.name + '" rows="3">' + val + '</textarea></div>';
+    } else {
+      fieldsHtml += '<div class="field-group"><label>' + f.label + '</label><input type="text" data-field="' + f.name + '" value="' + val.replace(/"/g, '&quot;') + '"></div>';
+    }
+  });
+
+  const html = '<h3>' + n.icon + ' Edit ' + n.title + '</h3>' + fieldsHtml +
+    '<div class="modal-actions"><button class="cancel" onclick="closeModal()">Cancel</button><button class="save" onclick="saveNodeProps(' + nodeId + ')">Save</button></div>';
+
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function saveNodeProps(nodeId) {
+  const node = editor.getNodeFromId(nodeId);
+  const modal = document.getElementById('modalContent');
+  modal.querySelectorAll('[data-field]').forEach(el => {
+    const field = el.dataset.field;
+    let val = el.value;
+    editor.updateNodeDataFromId(nodeId, { ...node.data, [field]: val });
+  });
+  // Update node title display
+  const titleInput = modal.querySelector('[data-field="subject"], [data-field="url"], [data-field="to"]');
+  closeModal();
+  showToast('Node properties saved', 'success');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+// ===== TOAST =====
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type || 'info') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== LOG =====
+function addLog(msg, type) {
+  const c = document.getElementById('logContent');
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-US', {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  const entry = document.createElement('div');
+  entry.className = 'log-entry ' + (type || 'info');
+  entry.innerHTML = '<span class="time">[' + time + ']</span><span class="msg">' + msg + '</span>';
+  c.appendChild(entry);
+  c.scrollTop = c.scrollHeight;
+}
+
+function clearLog() {
+  document.getElementById('logContent').innerHTML = '';
+  addLog('Log cleared', 'info');
+}
+
+function toggleLog() {
+  document.getElementById('logPanel').classList.toggle('open');
+}
+
+// ===== EXECUTION ENGINE =====
+let isRunning = false;
+
+function getExecutionOrder() {
+  const data = editor.drawflow.drawflow.Home.data;
+  const nodes = {};
+  const inDegree = {};
+  const adj = {};
+
+  Object.keys(data).forEach(id => {
+    nodes[id] = data[id];
+    inDegree[id] = 0;
+    adj[id] = [];
+  });
+
+  Object.values(data).forEach(node => {
+    Object.values(node.outputs).forEach(output => {
+      output.connections.forEach(conn => {
+        adj[node.id] = adj[node.id] || [];
+        adj[node.id].push(conn.node);
+        inDegree[conn.node] = (inDegree[conn.node] || 0) + 1;
+      });
+    });
+  });
+
+  // Topological sort (Kahn's)
+  const queue = [];
+  Object.keys(inDegree).forEach(id => {
+    if (inDegree[id] === 0) queue.push(id);
+  });
+
+  const order = [];
+  while (queue.length > 0) {
+    const id = queue.shift();
+    order.push(id);
+    (adj[id] || []).forEach(next => {
+      inDegree[next]--;
+      if (inDegree[next] === 0) queue.push(next);
+    });
+  }
+  return order;
+}
+
+async function runWorkflow() {
+  if (isRunning) return;
+  isRunning = true;
+  const btn = document.getElementById('btnRun');
+  btn.classList.add('running');
+  btn.innerHTML = '<span>⏳ Running...</span>';
+
+  // Open log panel
+  document.getElementById('logPanel').classList.add('open');
+  clearLog();
+  addLog('Workflow execution started...', 'info');
+
+  const order = getExecutionOrder();
+  if (order.length === 0) {
+    addLog('No nodes to execute!', 'error');
+    isRunning = false;
+    btn.classList.remove('running');
+    btn.innerHTML = '<span>▶ Run</span>';
+    return;
+  }
+
+  addLog('Execution order: ' + order.length + ' nodes', 'info');
+
+  for (let i = 0; i < order.length; i++) {
+    const id = order[i];
+    const node = editor.getNodeFromId(id);
+    if (!node) continue;
+
+    const ntype = node.name;
+    const n = NODES[ntype];
+    if (!n) continue;
+
+    // Highlight running node
+    const el = document.getElementById('node-' + id);
+    if (el) el.classList.add('wf-node-running');
+
+    addLog('Running: ' + n.title + ' [' + ntype + ']', 'active');
+
+    // Simulate execution time
+    let delay = 800;
+    if (ntype === 'delay') {
+      const sec = parseInt(node.data.seconds) || 5;
+      delay = Math.min(sec * 200, 3000); // Speed up for demo
+      addLog('Delay: waiting ' + sec + 's (simulated ' + Math.round(delay/1000) + 's)', 'info');
+    }
+
+    await sleep(delay);
+
+    // Mock result
+    const mockMsg = MOCK_DATA[ntype] || 'Node executed successfully';
+    addLog('Result: ' + mockMsg, 'success');
+
+    // Remove running state
+    if (el) el.classList.remove('wf-node-running');
+  }
+
+  addLog('Workflow execution completed!', 'success');
+  showToast('Workflow executed successfully!', 'success');
+
+  isRunning = false;
+  btn.classList.remove('running');
+  btn.innerHTML = '<span>▶ Run</span>';
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ===== SAVE / LOAD =====
+function saveWorkflow() {
+  const data = editor.export();
+  localStorage.setItem('n8n_workflow', JSON.stringify(data));
+  showToast('Workflow saved to local storage', 'success');
+  addLog('Workflow saved', 'info');
+}
+
+function loadWorkflow() {
+  const saved = localStorage.getItem('n8n_workflow');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      editor.import(data);
+      showToast('Workflow loaded', 'success');
+      addLog('Workflow loaded from local storage', 'info');
+    } catch(e) {
+      showToast('Failed to load workflow', 'error');
+    }
+  } else {
+    showToast('No saved workflow found', 'error');
+  }
+}
+
+function exportJSON() {
+  const data = editor.export();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'workflow-' + Date.now() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Workflow exported as JSON', 'success');
+  addLog('Workflow exported', 'info');
+}
+
+function clearWorkflow() {
+  if (confirm('Are you sure you want to clear the entire workflow?')) {
+    editor.clear();
+    localStorage.removeItem('n8n_workflow');
+    showToast('Workflow cleared', 'info');
+    addLog('Workflow cleared', 'info');
+  }
+}
+</script>
 </body>
 </html>
