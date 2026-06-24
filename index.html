@@ -16,7 +16,7 @@ html{scroll-behavior:smooth}
 .gb{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00)}.gb:hover{filter:brightness(1.1)}
 .cd{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
 .gl{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
-.fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}.fu.v{opacity:1;transform:translateY(0)}
+.js-loaded .fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}.fu.v{opacity:1;transform:translateY(0)}
 .tg{background:linear-gradient(135deg,#ff8e5d,#ff3b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .nb{backdrop-filter:blur(20px);background:rgba(14,9,24,.85)}
 
@@ -33,9 +33,9 @@ html{scroll-behavior:smooth}
 @keyframes mf3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-30px,60px) scale(.9)}66%{transform:translate(40px,-30px) scale(1.1)}}
 @keyframes mf4{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-40px) scale(1.05)}66%{transform:translate(-60px,30px) scale(.95)}}
 .cursor-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,59,33,.18) 0%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);z-index:1;opacity:0;transition:opacity .3s ease;will-change:transform}
-.reveal-text .word{display:inline-block;opacity:0;transform:translateY(20px);filter:blur(4px);transition:opacity .5s ease,transform .5s ease,filter .5s ease}
+.js-loaded .reveal-text .word{display:inline-block;opacity:0;transform:translateY(20px);filter:blur(4px);transition:opacity .5s ease,transform .5s ease,filter .5s ease}
 .reveal-text .word.revealed{opacity:1;transform:translateY(0);filter:blur(0)}
-.reveal-text .word .char{display:inline-block;opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
+.js-loaded .reveal-text .word .char{display:inline-block;opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
 .reveal-text .word.revealed .char{opacity:1;transform:translateY(0)}
 .glass-card{background:rgba(27,23,40,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:20px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
 .glass-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,rgba(255,59,33,.3),rgba(255,142,93,.1),transparent,transparent,rgba(255,59,33,.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:0;transition:opacity .4s ease}
@@ -686,7 +686,7 @@ function initTextReveal(){
     });
   });
 }
-initTextReveal();
+document.body.classList.add("js-loaded");initTextReveal();
 // Fallback: reveal all text after 2s if observer missed
 setTimeout(()=>{
   document.querySelectorAll(".reveal-text .word").forEach(w=>{
