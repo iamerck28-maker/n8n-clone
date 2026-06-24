@@ -11,48 +11,55 @@
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Inter',sans-serif;background:#0e0918;color:#fff;overflow-x:hidden;scroll-behavior:smooth}
     html{scroll-behavior:smooth}
-    .gb{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00)}
-    .gb:hover{filter:brightness(1.1)}
-    .cd{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
-    .cd:hover{border-color:rgba(255,255,255,.12);background:#272333}
+    .gb{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00)}.gb:hover{filter:brightness(1.1)}
+    .cd{background:#1b1728;border:1px solid rgba(255,255,255,.06)}.cd:hover{border-color:rgba(255,255,255,.12);background:#272333}
     .gl{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
-    .fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
-    .fu.v{opacity:1;transform:translateY(0)}
+    .fu{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}.fu.v{opacity:1;transform:translateY(0)}
     .tg{background:linear-gradient(135deg,#ff8e5d,#ff3b21);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     .nb{backdrop-filter:blur(20px);background:rgba(14,9,24,.85)}
     .sr{display:flex;gap:3rem;animation:sc 40s linear infinite}
     @keyframes sc{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    .fb{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px}
-    .fb:hover{background:rgba(255,255,255,.06)}
-    .tc{background:#1b1728;border:1px solid rgba(255,255,255,.06)}
     ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0e0918}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
     .mega{display:none;position:absolute;top:100%;left:0;min-width:320px;background:#1b1728;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;z-index:100}
     .nav-item:hover .mega{display:block}
-
-    /* Animated Demo Styles */
-    .demo-canvas{position:relative;width:100%;max-width:800px;margin:0 auto;aspect-ratio:16/9}
-    .demo-node{position:absolute;background:#1b1728;border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:10px;opacity:0;transform:scale(.7);transition:all .5s cubic-bezier(.16,1,.3,1);z-index:2}
-    .demo-node.active{opacity:1;transform:scale(1)}
-    .demo-node .node-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-    .demo-node .node-label{font-size:13px;font-weight:600;white-space:nowrap}
-    .demo-node .node-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
-    .demo-line{position:absolute;z-index:1;opacity:0;transition:opacity .6s ease .3s}
-    .demo-line.active{opacity:1}
-    .demo-line svg line{stroke-dasharray:8 4;animation:dashFlow 1s linear infinite}
-    .demo-line svg line.glow{stroke-dasharray:none;stroke-width:6;filter:blur(4px);opacity:.3}
-    @keyframes dashFlow{to{stroke-dashoffset:-12}}
-    .demo-pulse{position:absolute;width:10px;height:10px;border-radius:50%;background:#ff3b21;opacity:0;z-index:3;pointer-events:none}
-    @keyframes pulseMove{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--tx),var(--ty))}}
-    .demo-restart{margin-top:30px;display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:13px;font-weight:600;cursor:pointer;transition:all .25s ease}
-    .demo-restart:hover{background:rgba(255,255,255,.1);color:#fff}
-
-    /* Pricing Toggle */
+    .gradient-mesh{position:absolute;inset:0;overflow:hidden;z-index:0}
+    .mesh-orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.35;will-change:transform}
+    .mesh-orb-1{width:600px;height:600px;background:radial-gradient(circle,#ff3b21 0%,transparent 70%);top:-20%;left:-10%;animation:mf1 12s ease-in-out infinite}
+    .mesh-orb-2{width:500px;height:500px;background:radial-gradient(circle,#ff8e5d 0%,transparent 70%);bottom:-30%;right:-10%;animation:mf2 15s ease-in-out infinite}
+    .mesh-orb-3{width:400px;height:400px;background:radial-gradient(circle,#7c3aed 0%,transparent 70%);top:20%;right:20%;animation:mf3 18s ease-in-out infinite}
+    .mesh-orb-4{width:350px;height:350px;background:radial-gradient(circle,#ff3b21 0%,transparent 70%);bottom:10%;left:30%;animation:mf4 14s ease-in-out infinite}
+    @keyframes mf1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(80px,50px) scale(1.1)}66%{transform:translate(-40px,80px) scale(.9)}}
+    @keyframes mf2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-60px,-40px) scale(1.15)}66%{transform:translate(50px,-60px) scale(.85)}}
+    @keyframes mf3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-30px,60px) scale(.9)}66%{transform:translate(40px,-30px) scale(1.1)}}
+    @keyframes mf4{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-40px) scale(1.05)}66%{transform:translate(-60px,30px) scale(.95)}}
+    .cursor-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,59,33,.18) 0%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);z-index:1;opacity:0;transition:opacity .3s ease;will-change:transform}
+    .reveal-text .word{display:inline-block;opacity:0;transform:translateY(20px);filter:blur(4px);transition:opacity .5s ease,transform .5s ease,filter .5s ease}
+    .reveal-text .word.revealed{opacity:1;transform:translateY(0);filter:blur(0)}
+    .reveal-text .word .char{display:inline-block;opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
+    .reveal-text .word.revealed .char{opacity:1;transform:translateY(0)}
+    .glass-card{background:rgba(27,23,40,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:20px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
+    .glass-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,rgba(255,59,33,.3),rgba(255,142,93,.1),transparent,transparent,rgba(255,59,33,.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:0;transition:opacity .4s ease}
+    .glass-card:hover::before{opacity:1}
+    .glass-card:hover{background:rgba(27,23,40,.75);border-color:rgba(255,255,255,.12);transform:translateY(-6px)}
+    .hscroll-wrapper{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:20px 0}
+    .hscroll-wrapper::-webkit-scrollbar{display:none}
+    .hscroll-track{display:flex;gap:24px;padding:0 40px}
+    .hscroll-card{min-width:340px;max-width:400px;scroll-snap-align:center;flex-shrink:0}
+    @media(max-width:768px){.hscroll-card{min-width:280px}}
+    .tilt-card{transition:transform .15s ease,box-shadow .15s ease;transform-style:preserve-3d;will-change:transform}
+    .tilt-card .tilt-shine{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s ease;background:radial-gradient(circle at var(--shine-x,50%) var(--shine-y,50%),rgba(255,255,255,.08) 0%,transparent 60%)}
+    .tilt-card:hover .tilt-shine{opacity:1}
+    .svg-workflow path{stroke-dasharray:500;stroke-dashoffset:500;transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1)}
+    .svg-workflow.drawn path{stroke-dashoffset:0}
+    .workflow-node-g{opacity:0;transform:scale(.8);transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+    .workflow-node-g.visible{opacity:1;transform:scale(1)}
+    [data-parallax]{will-change:transform}
+    @media(max-width:768px){.cursor-glow{display:none!important}.mesh-orb{filter:blur(80px);opacity:.2}}
+    @media(max-width:480px){.mesh-orb{display:none}}
     .toggle-track{width:52px;height:28px;background:rgba(255,255,255,.1);border-radius:14px;position:relative;cursor:pointer;transition:background .3s ease}
     .toggle-track.active{background:#ff3b21}
     .toggle-thumb{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 6px rgba(0,0,0,.3)}
     .toggle-track.active .toggle-thumb{transform:translateX(24px)}
-
-    /* Testimonial Carousel */
     .testimonial-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:10px 0}
     .testimonial-track::-webkit-scrollbar{display:none}
     .testimonial-card{min-width:320px;max-width:380px;flex-shrink:0;scroll-snap-align:start;background:#1b1728;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px;transition:all .35s ease}
@@ -62,31 +69,13 @@
     .testimonial-card .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff8e5d,#ff3b21);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
     .testimonial-card .author-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.9)}
     .testimonial-card .author-biz{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
-
-    /* Pricing feature list */
     .price-check{color:#22c55e;font-weight:700;margin-right:8px}
     .price-cross{color:rgba(255,255,255,.15);margin-right:8px}
-
-    /* Mobile overrides */
-    @media (max-width:768px){
-      .demo-canvas{min-height:420px!important}
-      .demo-node{padding:10px 12px!important}
-      .demo-node .node-icon{width:30px;height:30px;font-size:13px}
-      .demo-node .node-label{font-size:11px}
-      .demo-node .node-sub{font-size:9px}
-      .testimonial-card{min-width:280px;max-width:100%}
-    }
-    @media (max-width:480px){
-      .demo-canvas{min-height:520px!important}
-      .demo-node{position:relative!important;left:auto!important;top:auto!important;width:100%;margin-bottom:8px}
-      .demo-line{display:none}
-      .testimonial-card{min-width:100%}
-    }
   </style>
 </head>
 <body>
   <!-- TOP BANNER -->
-  <div class="gb text-center py-2.5 px-4">
+  <div class="gb text-center py-2.5 px-4" data-parallax data-speed="0.1">
     <p class="text-white text-[13px] font-medium">🎉 Join our team and CEO Jan at n8n Fest in Berlin on July 16 <a href="#" class="underline ml-1">Reserve your spot →</a></p>
   </div>
 
@@ -103,14 +92,12 @@
         <div class="hidden lg:flex items-center gap-1">
           <div class="nav-item relative px-3 py-2">
             <button class="text-[13px] text-white/60 hover:text-white transition flex items-center gap-1">Product <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
-            <div class="mega">
-              <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Product overview</div><div class="text-xs text-white/40">Automate business processes without limits</div></a>
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Integrations</div><div class="text-xs text-white/40">Seamlessly move and transform data</div></a>
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Templates</div><div class="text-xs text-white/40">Explore +10k workflow templates</div></a>
-                <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Enterprise</div><div class="text-xs text-white/40">Security and governance at scale</div></a>
-              </div>
-            </div>
+            <div class="mega"><div class="grid grid-cols-2 gap-3">
+              <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Product overview</div><div class="text-xs text-white/40">Automate business processes without limits</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Integrations</div><div class="text-xs text-white/40">Seamlessly move and transform data</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Templates</div><div class="text-xs text-white/40">Explore +10k workflow templates</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-white/5 transition"><div class="text-sm font-semibold text-white mb-1">Enterprise</div><div class="text-xs text-white/40">Security and governance at scale</div></a>
+            </div></div>
           </div>
           <div class="nav-item relative px-3 py-2">
             <button class="text-[13px] text-white/60 hover:text-white transition flex items-center gap-1">Use cases <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
@@ -135,20 +122,23 @@
     </nav>
   </header>
 
-  <!-- HERO -->
-  <section class="relative pt-24 pb-20 px-6 overflow-hidden">
-    <div class="gl w-[700px] h-[700px] bg-[#ff3b21]/15 top-[-250px] right-[-250px]"></div>
-    <div class="gl w-[500px] h-[500px] bg-[#674545]/20 bottom-[-150px] left-[-150px]"></div>
+  <!-- HERO — F1 Parallax, F2 Mesh, F3 Cursor Glow, F4 Text Reveal -->
+  <section class="relative pt-24 pb-20 px-6 overflow-hidden" id="heroSection">
+    <div class="gradient-mesh" aria-hidden="true">
+      <div class="mesh-orb mesh-orb-1"></div>
+      <div class="mesh-orb mesh-orb-2"></div>
+      <div class="mesh-orb mesh-orb-3"></div>
+      <div class="mesh-orb mesh-orb-4"></div>
+    </div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="gl w-[700px] h-[700px] bg-[#ff3b21]/15 top-[-250px] right-[-250px]" data-parallax data-speed="0.15"></div>
+    <div class="gl w-[500px] h-[500px] bg-[#674545]/20 bottom-[-150px] left-[-150px]" data-parallax data-speed="0.08"></div>
     <div class="max-w-[900px] mx-auto text-center relative z-10">
       <div class="fu">
-        <h1 class="text-4xl md:text-6xl lg:text-[76px] font-black leading-[1.05] tracking-tight mb-6">
-          AI agents and workflows<br>you can <span class="tg">see and control</span>
-        </h1>
+        <h1 class="text-4xl md:text-6xl lg:text-[76px] font-black leading-[1.05] tracking-tight mb-6 reveal-text" id="heroTitle">AI agents and workflows you can see and control</h1>
       </div>
       <div class="fu" style="transition-delay:.1s">
-        <p class="text-white/50 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-          Build visually, go deep with code, connect to anything. Every step of your agents' reasoning, traceable on the canvas.
-        </p>
+        <p class="text-white/50 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed reveal-text" id="heroSub">Build visually, go deep with code, connect to anything. Every step of your agents' reasoning, traceable on the canvas.</p>
       </div>
       <div class="fu flex flex-col sm:flex-row gap-4 justify-center" style="transition-delay:.2s">
         <a href="#" class="gb px-8 py-4 rounded-xl text-[15px] font-bold">Get started for free</a>
@@ -158,7 +148,7 @@
     </div>
   </section>
 
-  <!-- SOCIAL PROOF TEXT -->
+  <!-- SOCIAL PROOF -->
   <section class="py-10 px-6">
     <div class="max-w-[900px] mx-auto text-center">
       <p class="text-white/30 text-sm">The world's most popular workflow automation platform for technical teams</p>
@@ -171,10 +161,10 @@
     </div>
   </section>
 
-  <!-- VIDEO SECTION -->
+  <!-- VIDEO -->
   <section class="py-16 px-6">
     <div class="max-w-[1000px] mx-auto">
-      <div class="fu cd rounded-2xl overflow-hidden relative" style="aspect-ratio:16/9">
+      <div class="fu cd rounded-2xl overflow-hidden relative" style="aspect-ratio:16/9" data-parallax data-speed="0.05">
         <div class="absolute inset-0 bg-gradient-to-br from-[#1b1728] to-[#0e0918] flex items-center justify-center">
           <div class="text-center">
             <div class="w-16 h-16 rounded-full gb flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-110 transition">
@@ -186,8 +176,7 @@
       </div>
     </div>
   </section>
-
-  <!-- ANIMATED WORKFLOW DEMO -->
+  <!-- F8: SVG WORKFLOW DIAGRAM -->
   <section class="py-20 px-6" id="demo">
     <div class="max-w-[1100px] mx-auto">
       <div class="fu text-center mb-12">
@@ -196,53 +185,42 @@
       </div>
       <div class="fu cd rounded-2xl p-6 md:p-10 relative overflow-hidden" id="demoContainer">
         <div class="gl w-[300px] h-[300px] bg-[#ff3b21]/10 top-[-100px] right-[-100px]"></div>
-        <div class="demo-canvas relative z-10" id="demoCanvas" style="min-height:280px">
-          <!-- Node 1: Trigger -->
-          <div class="demo-node" id="node1" style="left:5%;top:35%">
-            <div class="node-icon" style="background:rgba(255,59,33,.15)">⚡</div>
-            <div><div class="node-label">Trigger</div><div class="node-sub">Webhook received</div></div>
-          </div>
-          <!-- Node 2: Classify -->
-          <div class="demo-node" id="node2" style="left:33%;top:15%">
-            <div class="node-icon" style="background:rgba(255,142,93,.15)">🤖</div>
-            <div><div class="node-label">OpenAI</div><div class="node-sub">Classify intent</div></div>
-          </div>
-          <!-- Node 3: Route -->
-          <div class="demo-node" id="node3" style="left:63%;top:15%">
-            <div class="node-icon" style="background:rgba(96,165,250,.15)">🔀</div>
-            <div><div class="node-label">IF / Switch</div><div class="node-sub">Route by intent</div></div>
-          </div>
-          <!-- Node 4: Action -->
-          <div class="demo-node" id="node4" style="left:63%;top:58%">
-            <div class="node-icon" style="background:rgba(34,197,94,.15)">💬</div>
-            <div><div class="node-label">Slack</div><div class="node-sub">Notify #support</div></div>
-          </div>
-          <!-- Node 5: Output -->
-          <div class="demo-node" id="node5" style="left:33%;top:58%">
-            <div class="node-icon" style="background:rgba(168,85,247,.15)">📧</div>
-            <div><div class="node-label">Gmail</div><div class="node-sub">Reply to customer</div></div>
-          </div>
-
-          <!-- Connection Lines (SVG) -->
-          <svg class="demo-line" id="line1" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="20%" y1="45%" x2="38%" y2="30%" stroke="#ff3b21" stroke-width="2"/>
-            <line x1="20%" y1="45%" x2="38%" y2="30%" stroke="#ff3b21" stroke-width="2"/>
-          </svg>
-          <svg class="demo-line" id="line2" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="52%" y1="28%" x2="67%" y2="28%" stroke="#ff8e5d" stroke-width="2"/>
-            <line x1="52%" y1="28%" x2="67%" y2="28%" stroke="#ff8e5d" stroke-width="2"/>
-          </svg>
-          <svg class="demo-line" id="line3" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="78%" y1="38%" x2="78%" y2="58%" stroke="#60a5fa" stroke-width="2"/>
-            <line x1="78%" y1="38%" x2="78%" y2="58%" stroke="#60a5fa" stroke-width="2"/>
-          </svg>
-          <svg class="demo-line" id="line4" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
-            <line class="glow" x1="63%" y1="70%" x2="48%" y2="70%" stroke="#22c55e" stroke-width="2"/>
-            <line x1="63%" y1="70%" x2="48%" y2="70%" stroke="#22c55e" stroke-width="2"/>
+        <div class="relative z-10 mx-auto" style="max-width:800px">
+          <svg class="svg-workflow" id="svgWorkflow" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+            <path d="M130 200 C200 200,200 120,270 120" stroke="#ff3b21" stroke-width="2" fill="none" id="svgPath1"/>
+            <path d="M370 120 L470 120" stroke="#ff8e5d" stroke-width="2" fill="none" id="svgPath2"/>
+            <path d="M570 120 C620 120,620 180,620 200" stroke="#60a5fa" stroke-width="2" fill="none" id="svgPath3"/>
+            <path d="M620 280 C620 320,500 320,470 280" stroke="#22c55e" stroke-width="2" fill="none" id="svgPath4"/>
+            <path d="M370 280 L270 280" stroke="#a855f7" stroke-width="2" fill="none" id="svgPath5"/>
+            <g class="workflow-node-g" id="svgNode1">
+              <rect x="40" y="170" width="90" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+              <text x="85" y="198" text-anchor="middle" fill="white" font-size="13" font-weight="600">⚡ Trigger</text>
+              <text x="85" y="218" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Webhook</text>
+            </g>
+            <g class="workflow-node-g" id="svgNode2">
+              <rect x="270" y="90" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+              <text x="320" y="118" text-anchor="middle" fill="white" font-size="13" font-weight="600">🤖 OpenAI</text>
+              <text x="320" y="138" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Classify</text>
+            </g>
+            <g class="workflow-node-g" id="svgNode3">
+              <rect x="470" y="90" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+              <text x="520" y="118" text-anchor="middle" fill="white" font-size="13" font-weight="600">🔀 IF/Switch</text>
+              <text x="520" y="138" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Route</text>
+            </g>
+            <g class="workflow-node-g" id="svgNode4">
+              <rect x="570" y="250" width="100" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+              <text x="620" y="278" text-anchor="middle" fill="white" font-size="13" font-weight="600">💬 Slack</text>
+              <text x="620" y="298" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Notify</text>
+            </g>
+            <g class="workflow-node-g" id="svgNode5">
+              <rect x="200" y="250" width="70" height="60" rx="14" fill="#1b1728" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+              <text x="235" y="278" text-anchor="middle" fill="white" font-size="13" font-weight="600">📧 Gmail</text>
+              <text x="235" y="298" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Reply</text>
+            </g>
           </svg>
         </div>
-        <div class="text-center">
-          <button class="demo-restart" id="demoRestart" onclick="restartDemo()">
+        <div class="text-center mt-6">
+          <button class="demo-restart" id="demoRestart" onclick="restartSvgDemo()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v9h-9"/></svg>
             Replay animation
           </button>
@@ -251,21 +229,12 @@
     </div>
   </section>
 
-  <!-- TRUST BADGES -->
-  <section class="py-16 px-6 border-y border-white/5">
+  <!-- TRUST BADGES (parallax) -->
+  <section class="py-16 px-6 border-y border-white/5" data-parallax data-speed="0.03">
     <div class="max-w-[1100px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10 text-center">
-      <div class="fu">
-        <div class="text-3xl font-bold mb-2">Top 50 GitHub.</div>
-        <p class="text-white/40 text-sm">Our 193.7k stars place us among the most popular projects.</p>
-      </div>
-      <div class="fu" style="transition-delay:.1s">
-        <div class="text-3xl font-bold mb-2">4.9/5 stars on G2.</div>
-        <p class="text-white/40 text-sm">"I can move fast and never feel boxed in."</p>
-      </div>
-      <div class="fu" style="transition-delay:.2s">
-        <div class="text-3xl font-bold mb-2">200k+ community members.</div>
-        <p class="text-white/40 text-sm">This wouldn't be possible without you.</p>
-      </div>
+      <div class="fu"><div class="text-3xl font-bold mb-2">Top 50 GitHub.</div><p class="text-white/40 text-sm">Our 193.7k stars place us among the most popular projects.</p></div>
+      <div class="fu" style="transition-delay:.1s"><div class="text-3xl font-bold mb-2">4.9/5 stars on G2.</div><p class="text-white/40 text-sm">"I can move fast and never feel boxed in."</p></div>
+      <div class="fu" style="transition-delay:.2s"><div class="text-3xl font-bold mb-2">200k+ community members.</div><p class="text-white/40 text-sm">This wouldn't be possible without you.</p></div>
     </div>
   </section>
 
@@ -273,7 +242,7 @@
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
       <div class="fu text-center mb-12">
-        <h2 class="text-3xl md:text-5xl font-bold mb-4">Plug AI into your own data &<br><span class="tg">over 500 integrations</span></h2>
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">Plug AI into your own data &amp;<br><span class="tg">over 500 integrations</span></h2>
         <p class="text-white/40 text-base max-w-lg mx-auto">Use pre-built nodes for common apps. Custom API connections for everything else.</p>
       </div>
       <div class="fu overflow-hidden mb-8">
@@ -302,16 +271,79 @@
           <span class="text-white/25 text-sm flex items-center gap-2 flex-shrink-0">💼 HubSpot</span>
         </div>
       </div>
-      <div class="text-center">
-        <a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Browse all integrations →</a>
+      <div class="text-center"><a href="#" class="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition">Browse all integrations →</a></div>
+    </div>
+  </section>
+  <!-- F5 & F6: FEATURE SHOWCASE — Horizontal Scroll + Glassmorphism -->
+  <section class="py-20 px-6" id="featuresSection">
+    <div class="max-w-[1100px] mx-auto">
+      <div class="fu text-center mb-12">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4">Built for teams that<br><span class="tg">move fast</span></h2>
+        <p class="text-white/40 text-base max-w-lg mx-auto">Scroll through our core features →</p>
+      </div>
+      <div class="fu">
+        <div class="hscroll-wrapper" id="hscrollWrapper">
+          <div class="hscroll-track">
+            <!-- F5+7: Glass Card + Tilt -->
+            <div class="hscroll-card">
+              <div class="glass-card tilt-card p-8 h-full" data-tilt>
+                <div class="tilt-shine"></div>
+                <div class="text-3xl mb-4">⚡</div>
+                <h3 class="text-xl font-bold mb-3">Visual Workflow Builder</h3>
+                <p class="text-white/40 text-sm leading-relaxed">Drag and drop nodes to build powerful automations. No code required — but code when you need it.</p>
+              </div>
+            </div>
+            <div class="hscroll-card">
+              <div class="glass-card tilt-card p-8 h-full" data-tilt>
+                <div class="tilt-shine"></div>
+                <div class="text-3xl mb-4">🤖</div>
+                <h3 class="text-xl font-bold mb-3">AI Agents</h3>
+                <p class="text-white/40 text-sm leading-relaxed">Build autonomous agents with any LLM. Connect to your data, tools, and APIs with full visibility.</p>
+              </div>
+            </div>
+            <div class="hscroll-card">
+              <div class="glass-card tilt-card p-8 h-full" data-tilt>
+                <div class="tilt-shine"></div>
+                <div class="text-3xl mb-4">🔗</div>
+                <h3 class="text-xl font-bold mb-3">500+ Integrations</h3>
+                <p class="text-white/40 text-sm leading-relaxed">Connect to anything — from Google Sheets to custom APIs. Pre-built nodes for every major platform.</p>
+              </div>
+            </div>
+            <div class="hscroll-card">
+              <div class="glass-card tilt-card p-8 h-full" data-tilt>
+                <div class="tilt-shine"></div>
+                <div class="text-3xl mb-4">🔒</div>
+                <h3 class="text-xl font-bold mb-3">Self-Hosted</h3>
+                <p class="text-white/40 text-sm leading-relaxed">Deploy on your own infrastructure. Docker, Kubernetes, or bare metal — your data stays with you.</p>
+              </div>
+            </div>
+            <div class="hscroll-card">
+              <div class="glass-card tilt-card p-8 h-full" data-tilt>
+                <div class="tilt-shine"></div>
+                <div class="text-3xl mb-4">👥</div>
+                <h3 class="text-xl font-bold mb-3">Human-in-the-Loop</h3>
+                <p class="text-white/40 text-sm leading-relaxed">Add approval steps, manual triggers, and interactive nodes. Keep humans in control of critical decisions.</p>
+              </div>
+            </div>
+            <div class="hscroll-card">
+              <div class="glass-card tilt-card p-8 h-full" data-tilt>
+                <div class="tilt-shine"></div>
+                <div class="text-3xl mb-4">📊</div>
+                <h3 class="text-xl font-bold mb-3">Observability</h3>
+                <p class="text-white/40 text-sm leading-relaxed">Trace every execution. Debug with full logs, execution history, and real-time monitoring.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- FEATURE: Build AI agents -->
+  <!-- FEATURE: Build AI agents (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+        <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#ff3b21]/10 top-[-150px] right-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <div>
@@ -335,34 +367,19 @@
     </div>
   </section>
 
-  <!-- FEATURE: Complex AI -->
+  <!-- FEATURE: Complex AI (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+        <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#674545]/20 bottom-[-150px] left-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <div class="order-2 md:order-1">
             <div class="bg-[#0e0918] rounded-xl p-6 border border-white/5 space-y-4">
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🤖</span>
-                <span class="text-sm text-white/60 flex-1">Update Detected</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Running</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🧪</span>
-                <span class="text-sm text-white/60 flex-1">Running Custom Unit Testing</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">Active</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🔄</span>
-                <span class="text-sm text-white/60 flex-1">Update Rolled Back Automatically</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Done</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="text-lg">🔔</span>
-                <span class="text-sm text-white/60 flex-1">IT Team Notified of New Ticket</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Sent</span>
-              </div>
+              <div class="flex items-center gap-3"><span class="text-lg">🤖</span><span class="text-sm text-white/60 flex-1">Update Detected</span><span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Running</span></div>
+              <div class="flex items-center gap-3"><span class="text-lg">🧪</span><span class="text-sm text-white/60 flex-1">Running Custom Unit Testing</span><span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">Active</span></div>
+              <div class="flex items-center gap-3"><span class="text-lg">🔄</span><span class="text-sm text-white/60 flex-1">Update Rolled Back Automatically</span><span class="text-[10px] px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Done</span></div>
+              <div class="flex items-center gap-3"><span class="text-lg">🔔</span><span class="text-sm text-white/60 flex-1">IT Team Notified of New Ticket</span><span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400">Sent</span></div>
             </div>
           </div>
           <div class="order-1 md:order-2">
@@ -375,10 +392,11 @@
     </div>
   </section>
 
-  <!-- FEATURE: Runs where you decide -->
+  <!-- FEATURE: Runs where you decide (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+        <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#a85c5c]/15 top-[-150px] left-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <div>
@@ -401,23 +419,18 @@
     </div>
   </section>
 
-  <!-- FEATURE: Human-in-the-loop -->
+  <!-- FEATURE: Human-in-the-loop (glass) -->
   <section class="py-20 px-6">
     <div class="max-w-[1100px] mx-auto">
-      <div class="fu cd rounded-2xl p-8 md:p-14 relative overflow-hidden">
+      <div class="fu glass-card p-8 md:p-14 relative overflow-hidden" data-tilt>
+        <div class="tilt-shine"></div>
         <div class="gl w-[400px] h-[400px] bg-[#262149]/30 bottom-[-150px] right-[-150px]"></div>
         <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <div class="order-2 md:order-1">
             <div class="bg-[#0e0918] rounded-xl p-5 border border-white/5 space-y-3">
-              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-blue-400">
-                <p class="text-xs text-white/50 italic">"Who held meetings with SpaceX last week?"</p>
-              </div>
-              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-green-400">
-                <p class="text-xs text-white/50">On Wednesday, Joe updated the status to "won" in Salesforce after a Zoom call.</p>
-              </div>
-              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-purple-400">
-                <p class="text-xs text-white/50">On Thursday, Sue provided on-site setup and closed the ServiceNow ticket.</p>
-              </div>
+              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-blue-400"><p class="text-xs text-white/50 italic">"Who held meetings with SpaceX last week?"</p></div>
+              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-green-400"><p class="text-xs text-white/50">On Wednesday, Joe updated the status to "won" in Salesforce after a Zoom call.</p></div>
+              <div class="p-3 rounded-lg bg-white/5 border-l-2 border-purple-400"><p class="text-xs text-white/50">On Thursday, Sue provided on-site setup and closed the ServiceNow ticket.</p></div>
             </div>
           </div>
           <div class="order-1 md:order-2">
@@ -429,7 +442,6 @@
       </div>
     </div>
   </section>
-
   <!-- TESTIMONIALS -->
   <section class="py-20 px-6" id="testimonials">
     <div class="max-w-[1100px] mx-auto">
@@ -439,139 +451,31 @@
       </div>
       <div class="fu">
         <div class="testimonial-track">
-          <!-- Card 1 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"Sejak pakai n8n, pesanan online di Tokopedia langsung otomatis masuk Google Sheets dan notifikasi ke WhatsApp. Gak perlu cek manual lagi — hidup jadi lebih gampang!"</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">RS</div>
-              <div>
-                <div class="author-name">Rina Susanti</div>
-                <div class="author-biz">Toko Sembako Online — Majalengka Kota</div>
-              </div>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"Workflow automasi bikin sistem reminder pelanggan jadi jalan sendiri. Bayaran overdue? Langsung WA otomatis. Customer service saya tinggal fokus yang urgent aja."</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">DK</div>
-              <div>
-                <div class="author-name">Dedi Kusnadi</div>
-                <div class="author-biz">Bengkel Motor Kusna — Cipicung</div>
-              </div>
-            </div>
-          </div>
-          <!-- Card 3 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"Butuh 2 bulan pindah dari manual ke fully automated. Sekarang data stok, order dari Shopee, sama invoice semuanya nyatu. Efficiency naik 3x lipat, beneran."</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">AW</div>
-              <div>
-                <div class="author-name">Ayu Wulandari</div>
-                <div class="author-biz">Kue Majalengka — Jatitujuh</div>
-              </div>
-            </div>
-          </div>
-          <!-- Card 4 -->
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <div class="quote">"As a small warung owner, I never thought I could afford automation. But n8n's free tier gave me everything. Sekarang supply ordering fully automated — tinggal approve di HP."</div>
-            <div class="flex items-center gap-3">
-              <div class="avatar">HS</div>
-              <div>
-                <div class="author-name">Hendra Setiawan</div>
-                <div class="author-biz">Warung Hendra — Ciamis (Majalengka border)</div>
-              </div>
-            </div>
-          </div>
+          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"Sejak pakai n8n, pesanan online di Tokopedia langsung otomatis masuk Google Sheets dan notifikasi ke WhatsApp. Gak perlu cek manual lagi — hidup jadi lebih gampang!"</div><div class="flex items-center gap-3"><div class="avatar">RS</div><div><div class="author-name">Rina Susanti</div><div class="author-biz">Toko Sembako Online — Majalengka Kota</div></div></div></div>
+          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"Workflow automasi bikin sistem reminder pelanggan jadi jalan sendiri. Bayaran overdue? Langsung WA otomatis. Customer service saya tinggal fokus yang urgent aja."</div><div class="flex items-center gap-3"><div class="avatar">DK</div><div><div class="author-name">Dedi Kusnadi</div><div class="author-biz">Bengkel Motor Kusna — Cipicung</div></div></div></div>
+          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"Butuh 2 bulan pindah dari manual ke fully automated. Sekarang data stok, order dari Shopee, sama invoice semuanya nyatu. Efficiency naik 3x lipat, beneran."</div><div class="flex items-center gap-3"><div class="avatar">AW</div><div><div class="author-name">Ayu Wulandari</div><div class="author-biz">Kue Majalengka — Jatitujuh</div></div></div></div>
+          <div class="testimonial-card tilt-card" data-tilt><div class="tilt-shine"></div><div class="stars">★★★★★</div><div class="quote">"As a small warung owner, I never thought I could afford automation. But n8n's free tier gave me everything. Sekarang supply ordering fully automated — tinggal approve di HP."</div><div class="flex items-center gap-3"><div class="avatar">HS</div><div><div class="author-name">Hendra Setiawan</div><div class="author-biz">Warung Hendra — Ciamis (Majalengka border)</div></div></div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PRICING CALCULATOR -->
+  <!-- PRICING -->
   <section class="py-20 px-6" id="pricing">
     <div class="max-w-[1100px] mx-auto">
       <div class="fu text-center mb-8">
         <h2 class="text-3xl md:text-5xl font-bold mb-4">Simple, transparent<br><span class="tg">pricing</span></h2>
         <p class="text-white/40 text-base max-w-lg mx-auto mb-8">Start free. Scale when you're ready.</p>
-        <!-- Monthly / Yearly Toggle -->
         <div class="flex items-center justify-center gap-4">
           <span id="lblMonthly" class="text-sm font-semibold text-white">Monthly</span>
-          <div class="toggle-track" id="pricingToggle" onclick="togglePricing()">
-            <div class="toggle-thumb"></div>
-          </div>
+          <div class="toggle-track" id="pricingToggle" onclick="togglePricing()"><div class="toggle-thumb"></div></div>
           <span id="lblYearly" class="text-sm font-medium text-white/40">Yearly <span class="text-green-400 text-xs font-bold">Save 20%</span></span>
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <!-- Free -->
-        <div class="fu cd rounded-2xl p-8 relative">
-          <div class="mb-6">
-            <div class="text-sm font-semibold text-white/50 mb-1">Free</div>
-            <div class="flex items-end gap-1">
-              <span class="text-4xl font-bold" id="priceFree">$0</span>
-              <span class="text-white/30 text-sm mb-1">/month</span>
-            </div>
-          </div>
-          <p class="text-white/40 text-xs mb-6">Perfect for trying out workflow automation.</p>
-          <a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Get started free</a>
-          <ul class="space-y-3">
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 2,000 executions / month</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 5 active workflows</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Community support</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> AI agents</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Priority support</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Custom domains</li>
-          </ul>
-        </div>
-        <!-- Pro -->
-        <div class="fu cd rounded-2xl p-8 relative border-[#ff3b21]/30" style="border-color:rgba(255,59,33,.3)">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ff3b21] text-[10px] font-bold px-3 py-1 rounded-full">MOST POPULAR</div>
-          <div class="mb-6">
-            <div class="text-sm font-semibold text-white/50 mb-1">Pro</div>
-            <div class="flex items-end gap-1">
-              <span class="text-4xl font-bold" id="pricePro">$20</span>
-              <span class="text-white/30 text-sm mb-1">/month</span>
-            </div>
-          </div>
-          <p class="text-white/40 text-xs mb-6">For growing teams and serious automation.</p>
-          <a href="#" class="block text-center w-full py-3 rounded-xl gb text-sm font-bold mb-6">Start 14-day trial</a>
-          <ul class="space-y-3">
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> <span id="execPro">20,000</span> executions / month</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> AI agents & RAG</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Priority email support</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Custom domains</li>
-            <li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Dedicated account manager</li>
-          </ul>
-        </div>
-        <!-- Enterprise -->
-        <div class="fu cd rounded-2xl p-8 relative">
-          <div class="mb-6">
-            <div class="text-sm font-semibold text-white/50 mb-1">Enterprise</div>
-            <div class="flex items-end gap-1">
-              <span class="text-4xl font-bold" id="priceEnt">Custom</span>
-              <span class="text-white/30 text-sm mb-1" id="priceEntSub"></span>
-            </div>
-          </div>
-          <p class="text-white/40 text-xs mb-6">For organizations that need full control.</p>
-          <a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Talk to sales</a>
-          <ul class="space-y-3">
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited executions</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Advanced AI & RAG</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> SSO / SAML / LDAP</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Dedicated account manager</li>
-            <li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> On-premise deployment</li>
-          </ul>
-        </div>
+        <div class="fu glass-card tilt-card p-8" data-tilt><div class="tilt-shine"></div><div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Free</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="priceFree">$0</span><span class="text-white/30 text-sm mb-1">/month</span></div></div><p class="text-white/40 text-xs mb-6">Perfect for trying out workflow automation.</p><a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Get started free</a><ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 2,000 executions / month</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> 5 active workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Community support</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> AI agents</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Priority support</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Custom domains</li></ul></div>
+        <div class="fu glass-card tilt-card p-8 relative" data-tilt style="border-color:rgba(255,59,33,.3)"><div class="tilt-shine"></div><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ff3b21] text-[10px] font-bold px-3 py-1 rounded-full">MOST POPULAR</div><div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Pro</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="pricePro">$20</span><span class="text-white/30 text-sm mb-1">/month</span></div></div><p class="text-white/40 text-xs mb-6">For growing teams and serious automation.</p><a href="#" class="block text-center w-full py-3 rounded-xl gb text-sm font-bold mb-6">Start 14-day trial</a><ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> <span id="execPro">20,000</span> executions / month</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> AI agents &amp; RAG</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Priority email support</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Custom domains</li><li class="text-xs text-white/30 flex items-start"><span class="price-cross">✗</span> Dedicated account manager</li></ul></div>
+        <div class="fu glass-card tilt-card p-8" data-tilt><div class="tilt-shine"></div><div class="mb-6"><div class="text-sm font-semibold text-white/50 mb-1">Enterprise</div><div class="flex items-end gap-1"><span class="text-4xl font-bold" id="priceEnt">Custom</span><span class="text-white/30 text-sm mb-1" id="priceEntSub"></span></div></div><p class="text-white/40 text-xs mb-6">For organizations that need full control.</p><a href="#" class="block text-center w-full py-3 rounded-xl border border-white/15 text-sm font-semibold hover:bg-white/5 transition mb-6">Talk to sales</a><ul class="space-y-3"><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited executions</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited workflows</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Unlimited integrations</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Advanced AI &amp; RAG</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> SSO / SAML / LDAP</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> Dedicated account manager</li><li class="text-xs text-white/50 flex items-start"><span class="price-check">✓</span> On-premise deployment</li></ul></div>
       </div>
     </div>
   </section>
@@ -589,113 +493,171 @@
   <footer class="border-t border-white/5 py-12 px-6">
     <div class="max-w-[1300px] mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
       <div class="col-span-2 md:col-span-1">
-        <div class="flex items-center gap-2 mb-4">
-          <div class="w-7 h-7 rounded-lg gb flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></div>
-          <span class="font-bold text-sm">n8n</span>
-        </div>
+        <div class="flex items-center gap-2 mb-4"><div class="w-7 h-7 rounded-lg gb flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></div><span class="font-bold text-sm">n8n</span></div>
         <p class="text-white/30 text-xs leading-relaxed">AI workflow automation for technical teams.</p>
       </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Product</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Features</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Integrations</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Templates</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Pricing</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Release notes</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Use cases</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">AI agents</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">IT operations</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security ops</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Lead automation</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">CRM</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Resources</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Documentation</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Community</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Blog</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Enterprise</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-xs text-white mb-4">Company</h4>
-        <ul class="space-y-2.5">
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">About</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Careers</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Contact</a></li>
-          <li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security</a></li>
-        </ul>
-      </div>
+      <div><h4 class="font-semibold text-xs text-white mb-4">Product</h4><ul class="space-y-2.5"><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Features</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Integrations</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Templates</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Pricing</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Release notes</a></li></ul></div>
+      <div><h4 class="font-semibold text-xs text-white mb-4">Use cases</h4><ul class="space-y-2.5"><li><a href="#" class="text-white/40 hover:text-white text-xs transition">AI agents</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">IT operations</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security ops</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Lead automation</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">CRM</a></li></ul></div>
+      <div><h4 class="font-semibold text-xs text-white mb-4">Resources</h4><ul class="space-y-2.5"><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Documentation</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Community</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Blog</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Enterprise</a></li></ul></div>
+      <div><h4 class="font-semibold text-xs text-white mb-4">Company</h4><ul class="space-y-2.5"><li><a href="#" class="text-white/40 hover:text-white text-xs transition">About</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Careers</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Contact</a></li><li><a href="#" class="text-white/40 hover:text-white text-xs transition">Security</a></li></ul></div>
     </div>
     <div class="max-w-[1300px] mx-auto border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
       <p class="text-white/20 text-xs">© 2026 LM Studio. Inspired by n8n.</p>
-      <div class="flex items-center gap-5">
-        <a href="#" class="text-white/30 hover:text-white text-xs transition">Instagram</a>
-        <a href="#" class="text-white/30 hover:text-white text-xs transition">GitHub</a>
-        <a href="#" class="text-white/30 hover:text-white text-xs transition">Discord</a>
-      </div>
+      <div class="flex items-center gap-5"><a href="#" class="text-white/30 hover:text-white text-xs transition">Instagram</a><a href="#" class="text-white/30 hover:text-white text-xs transition">GitHub</a><a href="#" class="text-white/30 hover:text-white text-xs transition">Discord</a></div>
     </div>
   </footer>
-
   <script>
-    // ── Intersection Observer (enhanced) ──
-    const obs = new IntersectionObserver(e => {
-      e.forEach(x => {
-        if (x.isIntersecting) {
-          x.target.classList.add('v');
-          obs.unobserve(x.target); // only animate once
+    // ═══ FEATURE 1: Parallax Scroll ═══
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            document.querySelectorAll('[data-parallax]').forEach(el => {
+              const speed = parseFloat(el.dataset.speed) || 0.1;
+              el.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
+
+    // ═══ FEATURE 3: Cursor Glow ═══
+    if (!isMobile) {
+      const heroSection = document.getElementById('heroSection');
+      const cursorGlow = document.getElementById('cursorGlow');
+      let glowVisible = false;
+      heroSection.addEventListener('mousemove', e => {
+        const rect = heroSection.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        cursorGlow.style.left = x + 'px';
+        cursorGlow.style.top = y + 'px';
+        if (!glowVisible) {
+          cursorGlow.style.opacity = '1';
+          glowVisible = true;
         }
       });
+      heroSection.addEventListener('mouseleave', () => {
+        cursorGlow.style.opacity = '0';
+        glowVisible = false;
+      });
+    }
+
+    // ═══ FEATURE 4: Text Reveal Animation ═══
+    function initTextReveal() {
+      document.querySelectorAll('.reveal-text').forEach(el => {
+        const text = el.textContent.trim();
+        el.innerHTML = '';
+        const words = text.split(/\s+/);
+        words.forEach((word, wi) => {
+          const wordEl = document.createElement('span');
+          wordEl.className = 'word';
+          word.split('').forEach((ch, ci) => {
+            const charEl = document.createElement('span');
+            charEl.className = 'char';
+            charEl.textContent = ch;
+            charEl.style.transitionDelay = (wi * 60 + ci * 25) + 'ms';
+            wordEl.appendChild(charEl);
+          });
+          if (wi < words.length - 1) {
+            wordEl.appendChild(document.createTextNode(' '));
+          }
+          wordEl.style.transitionDelay = (wi * 80) + 'ms';
+          el.appendChild(wordEl);
+        });
+      });
+    }
+    initTextReveal();
+
+    // Reveal on hero visibility
+    const heroObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.word').forEach(w => w.classList.add('revealed'));
+          heroObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.reveal-text').forEach(el => heroObs.observe(el));
+
+    // ═══ General fade-up observer ═══
+    const obs = new IntersectionObserver(e => {
+      e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('v'); obs.unobserve(x.target); } });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fu').forEach(el => obs.observe(el));
 
-    // ── Animated Workflow Demo ──
-    const demoSteps = [
-      { nodes: ['node1'], lines: [] },
-      { nodes: ['node1', 'node2'], lines: ['line1'] },
-      { nodes: ['node1', 'node2', 'node3'], lines: ['line1', 'line2'] },
-      { nodes: ['node1', 'node2', 'node3', 'node4'], lines: ['line1', 'line2', 'line3'] },
-      { nodes: ['node1', 'node2', 'node3', 'node4', 'node5'], lines: ['line1', 'line2', 'line3', 'line4'] },
-    ];
-    let demoTimer = null;
-    let demoStep = 0;
-
-    function runDemo() {
-      if (demoStep >= demoSteps.length) return;
-      const step = demoSteps[demoStep];
-      step.nodes.forEach(id => document.getElementById(id)?.classList.add('active'));
-      step.lines.forEach(id => document.getElementById(id)?.classList.add('active'));
-      demoStep++;
-      demoTimer = setTimeout(runDemo, 700);
+    // ═══ FEATURE 7: 3D Tilt Effect ═══
+    if (!isMobile) {
+      document.querySelectorAll('[data-tilt]').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          const tiltX = (y - 0.5) * -8;
+          const tiltY = (x - 0.5) * 8;
+          card.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.02,1.02,1.02)`;
+          const shine = card.querySelector('.tilt-shine');
+          if (shine) {
+            shine.style.setProperty('--shine-x', (x * 100) + '%');
+            shine.style.setProperty('--shine-y', (y * 100) + '%');
+          }
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)';
+        });
+      });
     }
 
-    function restartDemo() {
-      clearTimeout(demoTimer);
-      demoStep = 0;
-      document.querySelectorAll('.demo-node, .demo-line').forEach(el => el.classList.remove('active'));
-      setTimeout(runDemo, 400);
+    // ═══ FEATURE 8: SVG Workflow Animation ═══
+    let svgDemoTimer = null;
+    const svgNodes = ['svgNode1','svgNode2','svgNode3','svgNode4','svgNode5'];
+    const svgPaths = ['svgPath1','svgPath2','svgPath3','svgPath4','svgPath5'];
+    const svgWorkflow = document.getElementById('svgWorkflow');
+    let svgStep = 0;
+
+    function runSvgDemo() {
+      if (svgStep >= svgNodes.length) return;
+      // Show node
+      const node = document.getElementById(svgNodes[svgStep]);
+      if (node) node.classList.add('visible');
+      // Draw path to next
+      if (svgStep > 0) {
+        const path = document.getElementById(svgPaths[svgStep - 1]);
+        if (path) {
+          svgWorkflow.classList.add('drawn');
+          path.style.strokeDashoffset = '0';
+        }
+      }
+      svgStep++;
+      svgDemoTimer = setTimeout(runSvgDemo, 800);
     }
 
-    // Auto-start demo when visible
-    const demoObs = new IntersectionObserver(e => {
-      e.forEach(x => {
-        if (x.isIntersecting && demoStep === 0) {
-          runDemo();
-          demoObs.unobserve(x.target);
+    function restartSvgDemo() {
+      clearTimeout(svgDemoTimer);
+      svgStep = 0;
+      svgNodes.forEach(id => { const n = document.getElementById(id); if(n) n.classList.remove('visible'); });
+      svgPaths.forEach(id => { const p = document.getElementById(id); if(p) p.style.strokeDashoffset = '500'; });
+      svgWorkflow.classList.remove('drawn');
+      setTimeout(runSvgDemo, 400);
+    }
+
+    const svgObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && svgStep === 0) {
+          runSvgDemo();
+          svgObs.unobserve(e.target);
         }
       });
     }, { threshold: 0.3 });
     const dc = document.getElementById('demoContainer');
-    if (dc) demoObs.observe(dc);
+    if (dc) svgObs.observe(dc);
 
-    // ── Pricing Toggle ──
+    // ═══ PRICING TOGGLE ═══
     let isYearly = false;
     function togglePricing() {
       isYearly = !isYearly;
@@ -711,7 +673,6 @@
       lblY.classList.toggle('text-white/40', !isYearly);
       lblY.classList.toggle('font-semibold', isYearly);
       lblY.classList.toggle('font-medium', !isYearly);
-
       if (isYearly) {
         document.getElementById('pricePro').textContent = '$16';
         document.getElementById('execPro').textContent = '40,000';
@@ -722,12 +683,6 @@
         document.getElementById('execPro').textContent = '20,000';
         document.getElementById('priceEnt').textContent = 'Custom';
         document.getElementById('priceEntSub').textContent = '';
-      }
-    }
-  </script>
-</body>
-</html>
-t = '';
       }
     }
   </script>
