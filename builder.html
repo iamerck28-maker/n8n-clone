@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>n8n Workflow Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{dn:'#0e0918',dn2:'#1b1728',dn3:'#272333',ac:'#ff3b21',aco:'#ff8e5d'}}}}</script>
+<script src="https://unpkg.com/drawflow@0.0.59/dist/drawflow.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0e0918;color:#fff;overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0e0918}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+.app-layout{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:220px;background:#1b1728;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.log-panel{height:0;transition:height .3s ease;border-top:1px solid rgba(255,255,255,.06);background:#1b1728;overflow:hidden}
+.log-panel.open{height:220px}
+.log-header{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.06);gap:8px}
+.log-header span{font-size:12px;font-weight:600;flex:1}
+.log-content{padding:10px 16px;font-family:monospace;font-size:11px;color:rgba(255,255,255,.5);overflow-y:auto;height:175px}
+.log-entry{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03);display:flex;gap:8px}
+.log-entry .time{color:rgba(255,255,255,.25);white-space:nowrap;min-width:65px}
+.log-entry .msg{flex:1}
+.log-entry.success .msg{color:#22c55e}
+.log-entry.error .msg{color:#ef4444}
+.log-entry.info .msg{color:#60a5fa}
+.log-entry.active .msg{color:#ff8e5d}
+.sidebar-header{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sidebar-header h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4)}
+.node-group{padding:10px 12px}
+.node-group-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.25);margin-bottom:6px}
+.drag-node{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:grab;transition:all .15s ease;margin-bottom:4px;border:1px solid transparent}
+.drag-node:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)}
+.drag-node:active{cursor:grabbing;transform:scale(.97)}
+.drag-node .icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.drag-node .label{font-size:12px;font-weight:500;color:rgba(255,255,255,.7)}
+.drag-node .sublabel{font-size:9px;color:rgba(255,255,255,.3);margin-top:1px}
+.builder-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(27,23,40,.8);backdrop-filter:blur(10px);flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-left .logo{width:28px;height:28px;border-radius:7px;background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00);display:flex;align-items:center;justify-content:center}
+.header-left .title{font-size:14px;font-weight:700}
+.header-right{display:flex;align-items:center;gap:8px}
+.hbtn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.6)}
+.hbtn:hover{background:rgba(255,255,255,.08);color:#fff}
+.hbtn.primary{background:linear-gradient(55deg,#fd8925 40.84%,#ff0c00);color:#fff;border-color:transparent}
+.hbtn.primary:hover{filter:brightness(1.1)}
+.hbtn.danger{border-color:rgba(239,68,68,.3);color:#ef4444}
+.hbtn.danger:hover{background:rgba(239,68,68,.1)}
+.hbtn.running{animation:runPulse 1.5s ease infinite}
+@keyframes runPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,33,0)}50%{box-shadow:0 0 0 6px rgba(255,59,33,.25)}}
+#drawflow{background:#0e0918;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:20px 20px;width:100%;height:100%}
+.drawflow .drawflow-node{min-width:170px;max-width:200px;background:#1b1728;border:2px solid rgba(255,255,255,.08);border-radius:12px;color:#fff;transition:border-color .2s,box-shadow .2s}
+.drawflow .drawflow-node.selected{border-color:#ff3b21;box-shadow:0 0 20px rgba(255,59,33,.15)}
+.drawflow .drawflow-node .input{width:10px;height:10px;background:#272333;border:2px solid rgba(255,255,255,.2);border-radius:50%;left:-5px;top:50%;transform:translateY(-50%)}
+.drawflow .drawflow-node .output{width:10px;height:10px;background:#272333;border:2px solid rgba(255,255,255,.2);border-radius:50%;right:-5px;top:50%;transform:translateY(-50%)}
+.drawflow .drawflow-node .input:hover,.drawflow .drawflow-node .output:hover{background:#ff3b21;border-color:#ff3b21}
+.drawflow .drawflow-node .outputs .output{border-color:rgba(255,255,255,.15)}
+.drawflow .drawflow-node .inputs .input{border-color:rgba(255,255,255,.15)}
+.drawflow .connection .main-path{stroke:rgba(255,255,255,.15);stroke-width:2;fill:none}
+.drawflow .connection .main-path:hover{stroke:#ff3b21;stroke-width:3}
+.drawflow .drawflow-delete{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,.8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;opacity:0;transition:opacity .15s}
+.drawflow .drawflow-node:hover .drawflow-delete{opacity:1}
+.wf-node-header{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
+.wf-node-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.wf-node-info{flex:1;min-width:0}
+.wf-node-title{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wf-node-type{font-size:9px;color:rgba(255,255,255,.35);margin-top:1px}
+.wf-node-body{padding:2px 12px 10px;font-size:10px;color:rgba(255,255,255,.3)}
+.wf-node-running{animation:nodePulse 1s ease infinite}
+@keyframes nodePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,59,33,0)}50%{box-shadow:0 0 0 8px rgba(255,59,33,.15)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#1b1728;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px;width:90%;max-width:440px;max-height:80vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.modal label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.modal input,.modal select,.modal textarea{width:100%;padding:8px 12px;background:#0e0918;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-size:13px;font-family:Inter,sans-serif;outline:none;transition:border-color .15s}
+.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:#ff3b21}
+.modal textarea{resize:vertical;min-height:60px;font-family:monospace;font-size:12px}
+.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.modal-actions button{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.modal-actions .save{background:#ff3b21;color:#fff}
+.modal-actions .save:hover{filter:brightness(1.1)}
+.modal-actions .cancel{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6)}
+.modal-actions .cancel:hover{background:rgba(255,255,255,.1)}
+.field-group{margin-bottom:12px}
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:10px;font-size:12px;font-weight:600;z-index:2000;transform:translateY(100px);opacity:0;transition:all .3s ease;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#16a34a;color:#fff}
+.toast.info{background:#2563eb;color:#fff}
+.toast.error{background:#dc2626;color:#fff}
+@media(max-width:768px){
+.sidebar{width:100%;height:auto;max-height:110px;border-right:none;border-bottom:1px solid rgba(255,255,255,.06);overflow-x:auto;overflow-y:hidden}
+.node-group{display:flex;gap:6px;padding:8px;flex-wrap:nowrap}
+.node-group-title{display:none}
+.drag-node{min-width:120px;margin-bottom:0;flex-shrink:0}
+.app-layout{flex-direction:column}
+.log-panel.open{height:160px}
+}</style>
+</head><body>
+<div class="app-layout">
+<div class="sidebar" id="sidebar">
+<div class="sidebar-header"><h3>📦 Node Palette</h3></div>
+<div class="node-group">
+<div class="node-group-title">Triggers</div>
+<div class="drag-node" draggable="true" data-node-type="trigger"><div class="icon" style="background:rgba(34,197,94,.15)">🎯</div><div><div class="label">Trigger</div><div class="sublabel">Webhook</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="trigger"><div class="icon" style="background:rgba(34,197,94,.15)">⏰</div><div><div class="label">Schedule</div><div class="sublabel">Cron trigger</div></div></div>
+</div>
+<div class="node-group">
+<div class="node-group-title">Actions</div>
+<div class="drag-node" draggable="true" data-node-type="http"><div class="icon" style="background:rgba(96,165,250,.15)">🌐</div><div><div class="label">HTTP Request</div><div class="sublabel">GET / POST</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="email"><div class="icon" style="background:rgba(168,85,247,.15)">📧</div><div><div class="label">Email</div><div class="sublabel">Send email</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="delay"><div class="icon" style="background:rgba(234,179,8,.15)">⏱️</div><div><div class="label">Delay</div><div class="sublabel">Wait N seconds</div></div></div>
+<div class="drag-node" draggable="true" data-node-type="if"><div class="icon" style="background:rgba(249,115,22,.15)">🔀</div><div><div class="label">IF / Switch</div><div class="sublabel">Route by condition</div></div></div>
+</div>
+<div class="node-group">
+<div class="node-group-title">Output</div>
+<div class="drag-node" draggable="true" data-node-type="output"><div class="icon" style="background:rgba(239,68,68,.15)">📤</div><div><div class="label">Output</div><div class="sublabel">Response / Log</div></div></div>
+</div>
+</div>
+<div class="main-area">
+<div class="builder-header">
+<div class="header-left">
+<a href="index.html" class="hbtn" style="text-decoration:none;font-size:12px">← Back to Home</a>
+<div class="logo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg></div>
+<div class="title">n8n Workflow Builder</div>
+</div>
+<div class="header-right">
+<button class="hbtn" onclick="clearWorkflow()">Clear</button>
+<button class="hbtn" onclick="exportJSON()">Export JSON</button>
+<button class="hbtn" onclick="saveWorkflow()">Save</button>
+<button class="hbtn" onclick="loadWorkflow()">Load</button>
+<button class="hbtn primary" id="btnRun" onclick="runWorkflow()">▶ Run</button>
+<button class="hbtn" onclick="toggleLog()">Log</button>
+</div>
+</div>
+<div class="canvas-wrapper"><div id="drawflow"></div></div>
+<div class="log-panel" id="logPanel">
+<div class="log-header"><span>📋 Execution Log</span><button class="hbtn" onclick="clearLog()" style="padding:3px 8px;font-size:10px;">Clear</button></div>
+<div class="log-content" id="logContent"></div>
+</div>
+</div>
+</div>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+<div class="modal" id="modalContent"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// ===== CONFIG =====
+const NODES = {
+  trigger: {icon:'🎯',color:'rgba(34,197,94,.15)',title:'Trigger',type:'Webhook',inputs:0,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(34,197,94,.15)">🎯</div><div class="wf-node-info"><div class="wf-node-title">Trigger</div><div class="wf-node-type">Webhook</div></div></div><div class="wf-node-body">Configure trigger settings</div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'url',label:'Webhook URL',type:'text',default:'/webhook/hook-1'},{name:'method',label:'Method',type:'select',options:['GET','POST','PUT'],default:'POST'}]},
+  http: {icon:'🌐',color:'rgba(96,165,250,.15)',title:'HTTP Request',type:'GET / POST',inputs:1,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(96,165,250,.15)">🌐</div><div class="wf-node-info"><div class="wf-node-title">HTTP Request</div><div class="wf-node-type">GET / POST</div></div></div><div class="wf-node-body">Configure API call</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'url',label:'URL',type:'text',default:'https://api.example.com'},{name:'method',label:'Method',type:'select',options:['GET','POST','PUT','DELETE'],default:'GET'},{name:'headers',label:'Headers (JSON)',type:'textarea',default:'{"Content-Type":"application/json"}'}]},
+  email: {icon:'📧',color:'rgba(168,85,247,.15)',title:'Email',type:'Send email',inputs:1,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(168,85,247,.15)">📧</div><div class="wf-node-info"><div class="wf-node-title">Email</div><div class="wf-node-type">Send email</div></div></div><div class="wf-node-body">Configure email</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'to',label:'To',type:'text',default:'user@example.com'},{name:'subject',label:'Subject',type:'text',default:'Workflow Notification'},{name:'body',label:'Body',type:'textarea',default:'Hello from n8n workflow!'}]},
+  delay: {icon:'⏱️',color:'rgba(234,179,8,.15)',title:'Delay',type:'Wait N seconds',inputs:1,outputs:1,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(234,179,8,.15)">⏱️</div><div class="wf-node-info"><div class="wf-node-title">Delay</div><div class="wf-node-type">Wait N seconds</div></div></div><div class="wf-node-body">Configure delay</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'seconds',label:'Delay (seconds)',type:'text',default:'5'},{name:'unit',label:'Unit',type:'select',options:['seconds','minutes','hours'],default:'seconds'}]},
+  if: {icon:'🔀',color:'rgba(249,115,22,.15)',title:'IF / Switch',type:'Route by condition',inputs:1,outputs:2,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(249,115,22,.15)">🔀</div><div class="wf-node-info"><div class="wf-node-title">IF / Switch</div><div class="wf-node-type">Route by condition</div></div></div><div class="wf-node-body">Configure conditions</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div><div class="output"></div></div>',
+    props:[{name:'condition',label:'Condition',type:'text',default:"data.status === 'success'"},{name:'trueLabel',label:'True Branch',type:'text',default:'Yes'},{name:'falseLabel',label:'False Branch',type:'text',default:'No'}]},
+  output: {icon:'📤',color:'rgba(239,68,68,.15)',title:'Output',type:'Response / Log',inputs:1,outputs:0,
+    html:'<div class="wf-node-header"><div class="wf-node-icon" style="background:rgba(239,68,68,.15)">📤</div><div class="wf-node-info"><div class="wf-node-title">Output</div><div class="wf-node-type">Response / Log</div></div></div><div class="wf-node-body">Configure output</div><div class="inputs"><div class="input"></div></div><div class="outputs"><div class="output"></div></div>',
+    props:[{name:'format',label:'Output Format',type:'select',options:['JSON','Text','File'],default:'JSON'},{name:'destination',label:'Destination',type:'text',default:'/api/response'}]}
+};
+
+const MOCK_DATA = {
+  trigger:'Webhook received at /webhook/hook-1 - Payload: {event: "user.signup"}',
+  http:'GET https://api.example.com -> 200 OK: {users: [{id: 1, name: "John"}]}',
+  email:'Email sent to user@example.com - Subject: "Workflow Notification"',
+  delay:'Waiting 5 seconds...',
+  if:'Condition evaluated: data.status === "success" -> true',
+  output:'Output sent: {status: "ok", processed: true}'
+};
+
+// ===== INIT DRAWFLOW =====
+let editor;
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('drawflow');
+  editor = new Drawflow(container);
+  editor.reroute = true;
+  editor.reroute_fix_curvature = true;
+  editor.force_first_input = false;
+  editor.start();
+  editor.zoom_refresh();
+
+  // Drag & Drop
+  document.querySelectorAll('.drag-node').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('nodeType', el.dataset.nodeType);
+      e.dataTransfer.effectAllowed = 'move';
+    });
+  });
+  container.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+  container.addEventListener('drop', e => {
+    e.preventDefault();
+    const ntype = e.dataTransfer.getData('nodeType');
+    if (!ntype || !NODES[ntype]) return;
+    const n = NODES[ntype];
+    const pos = editor.canvas_x !== undefined ? {x: editor.canvas_x, y: editor.canvas_y} : {x: e.offsetX, y: e.offsetY};
+    editor.addNode(ntype, n.inputs, n.outputs, pos.x, pos.y, ntype, {}, n.html);
+  });
+
+  // Node events
+  editor.on('nodeCreated', id => {
+    const node = editor.getNodeFromId(id);
+    if (node && node.data && !node.data.type) {
+      node.data.type = Object.keys(editor.drawflow.drawflow.Home.data).length > 0 ? ntype : ntype;
+    }
+  });
+
+  editor.on('nodeDoubleClick', id => {
+    openNodeEditor(id);
+  });
+
+  // Keyboard delete
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      const selected = document.querySelectorAll('.drawflow .drawflow-node.selected');
+      if (selected.length > 0) {
+        selected.forEach(el => {
+          const id = el.id.replace('node-', '');
+          editor.removeNodeId('node-' + id);
+        });
+      }
+    }
+  });
+
+  // Load from localStorage
+  const saved = localStorage.getItem('n8n_workflow');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      editor.import(data);
+      showToast('Workflow loaded from auto-save', 'info');
+    } catch(e) {}
+  }
+});
+
+// ===== NODE EDITOR =====
+function openNodeEditor(nodeId) {
+  const node = editor.getNodeFromId(nodeId);
+  if (!node) return;
+  const ntype = node.name;
+  const n = NODES[ntype];
+  if (!n) return;
+
+  let fieldsHtml = '';
+  (n.props || []).forEach(f => {
+    const val = node.data[f.name] || f.default || '';
+    if (f.type === 'select') {
+      const opts = f.options.map(o => '<option value="' + o + '"' + (o === val ? ' selected' : '') + '>' + o + '</option>').join('');
+      fieldsHtml += '<div class="field-group"><label>' + f.label + '</label><select data-field="' + f.name + '">' + opts + '</select></div>';
+    } else if (f.type === 'textarea') {
+      fieldsHtml += '<div class="field-group"><label>' + f.label + '</label><textarea data-field="' + f.name + '" rows="3">' + val + '</textarea></div>';
+    } else {
+      fieldsHtml += '<div class="field-group"><label>' + f.label + '</label><input type="text" data-field="' + f.name + '" value="' + val.replace(/"/g, '&quot;') + '"></div>';
+    }
+  });
+
+  const html = '<h3>' + n.icon + ' Edit ' + n.title + '</h3>' + fieldsHtml +
+    '<div class="modal-actions"><button class="cancel" onclick="closeModal()">Cancel</button><button class="save" onclick="saveNodeProps(' + nodeId + ')">Save</button></div>';
+
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function saveNodeProps(nodeId) {
+  const node = editor.getNodeFromId(nodeId);
+  const modal = document.getElementById('modalContent');
+  modal.querySelectorAll('[data-field]').forEach(el => {
+    const field = el.dataset.field;
+    let val = el.value;
+    editor.updateNodeDataFromId(nodeId, { ...node.data, [field]: val });
+  });
+  // Update node title display
+  const titleInput = modal.querySelector('[data-field="subject"], [data-field="url"], [data-field="to"]');
+  closeModal();
+  showToast('Node properties saved', 'success');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+// ===== TOAST =====
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type || 'info') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== LOG =====
+function addLog(msg, type) {
+  const c = document.getElementById('logContent');
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-US', {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  const entry = document.createElement('div');
+  entry.className = 'log-entry ' + (type || 'info');
+  entry.innerHTML = '<span class="time">[' + time + ']</span><span class="msg">' + msg + '</span>';
+  c.appendChild(entry);
+  c.scrollTop = c.scrollHeight;
+}
+
+function clearLog() {
+  document.getElementById('logContent').innerHTML = '';
+  addLog('Log cleared', 'info');
+}
+
+function toggleLog() {
+  document.getElementById('logPanel').classList.toggle('open');
+}
+
+// ===== EXECUTION ENGINE =====
+let isRunning = false;
+
+function getExecutionOrder() {
+  const data = editor.drawflow.drawflow.Home.data;
+  const nodes = {};
+  const inDegree = {};
+  const adj = {};
+
+  Object.keys(data).forEach(id => {
+    nodes[id] = data[id];
+    inDegree[id] = 0;
+    adj[id] = [];
+  });
+
+  Object.values(data).forEach(node => {
+    Object.values(node.outputs).forEach(output => {
+      output.connections.forEach(conn => {
+        adj[node.id] = adj[node.id] || [];
+        adj[node.id].push(conn.node);
+        inDegree[conn.node] = (inDegree[conn.node] || 0) + 1;
+      });
+    });
+  });
+
+  // Topological sort (Kahn's)
+  const queue = [];
+  Object.keys(inDegree).forEach(id => {
+    if (inDegree[id] === 0) queue.push(id);
+  });
+
+  const order = [];
+  while (queue.length > 0) {
+    const id = queue.shift();
+    order.push(id);
+    (adj[id] || []).forEach(next => {
+      inDegree[next]--;
+      if (inDegree[next] === 0) queue.push(next);
+    });
+  }
+  return order;
+}
+
+async function runWorkflow() {
+  if (isRunning) return;
+  isRunning = true;
+  const btn = document.getElementById('btnRun');
+  btn.classList.add('running');
+  btn.innerHTML = '<span>⏳ Running...</span>';
+
+  // Open log panel
+  document.getElementById('logPanel').classList.add('open');
+  clearLog();
+  addLog('Workflow execution started...', 'info');
+
+  const order = getExecutionOrder();
+  if (order.length === 0) {
+    addLog('No nodes to execute!', 'error');
+    isRunning = false;
+    btn.classList.remove('running');
+    btn.innerHTML = '<span>▶ Run</span>';
+    return;
+  }
+
+  addLog('Execution order: ' + order.length + ' nodes', 'info');
+
+  for (let i = 0; i < order.length; i++) {
+    const id = order[i];
+    const node = editor.getNodeFromId(id);
+    if (!node) continue;
+
+    const ntype = node.name;
+    const n = NODES[ntype];
+    if (!n) continue;
+
+    // Highlight running node
+    const el = document.getElementById('node-' + id);
+    if (el) el.classList.add('wf-node-running');
+
+    addLog('Running: ' + n.title + ' [' + ntype + ']', 'active');
+
+    // Simulate execution time
+    let delay = 800;
+    if (ntype === 'delay') {
+      const sec = parseInt(node.data.seconds) || 5;
+      delay = Math.min(sec * 200, 3000); // Speed up for demo
+      addLog('Delay: waiting ' + sec + 's (simulated ' + Math.round(delay/1000) + 's)', 'info');
+    }
+
+    await sleep(delay);
+
+    // Mock result
+    const mockMsg = MOCK_DATA[ntype] || 'Node executed successfully';
+    addLog('Result: ' + mockMsg, 'success');
+
+    // Remove running state
+    if (el) el.classList.remove('wf-node-running');
+  }
+
+  addLog('Workflow execution completed!', 'success');
+  showToast('Workflow executed successfully!', 'success');
+
+  isRunning = false;
+  btn.classList.remove('running');
+  btn.innerHTML = '<span>▶ Run</span>';
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ===== SAVE / LOAD =====
+function saveWorkflow() {
+  const data = editor.export();
+  localStorage.setItem('n8n_workflow', JSON.stringify(data));
+  showToast('Workflow saved to local storage', 'success');
+  addLog('Workflow saved', 'info');
+}
+
+function loadWorkflow() {
+  const saved = localStorage.getItem('n8n_workflow');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      editor.import(data);
+      showToast('Workflow loaded', 'success');
+      addLog('Workflow loaded from local storage', 'info');
+    } catch(e) {
+      showToast('Failed to load workflow', 'error');
+    }
+  } else {
+    showToast('No saved workflow found', 'error');
+  }
+}
+
+function exportJSON() {
+  const data = editor.export();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'workflow-' + Date.now() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Workflow exported as JSON', 'success');
+  addLog('Workflow exported', 'info');
+}
+
+function clearWorkflow() {
+  if (confirm('Are you sure you want to clear the entire workflow?')) {
+    editor.clear();
+    localStorage.removeItem('n8n_workflow');
+    showToast('Workflow cleared', 'info');
+    addLog('Workflow cleared', 'info');
+  }
+}
+</script>
+</body>
+</html>
